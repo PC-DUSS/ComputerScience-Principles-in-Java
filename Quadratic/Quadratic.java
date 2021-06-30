@@ -30,8 +30,6 @@ public class Quadratic
         a = getInt(scanner, "a");
         b = getInt(scanner, "b");
         c = getInt(scanner, "c");
-        // Clear Scanner buffer
-        scanner.nextLine();
 
         if (!isDivideByZero(a) && !isSquareRootOfNegative(a, b, c))
         {
@@ -77,6 +75,8 @@ public class Quadratic
       if (scanner.hasNextInt())
       {
         myInt = scanner.nextInt();
+        // Clear Scanner buffer
+        scanner.nextLine();
         break;
       }
       else if (scanner.hasNext("q") || scanner.hasNext("Q"))
@@ -87,6 +87,8 @@ public class Quadratic
       }
       else
       {
+        // Clear Scanner buffer
+        scanner.nextLine();
         System.out.println("Invalid integer!");
       }
     }
@@ -135,13 +137,16 @@ public class Quadratic
         scanner.nextLine();
         return true;
       }
-      else if (scanner.hasNext("n") || scanner.hasNext("N"))
+      else if (scanner.hasNext("n") || scanner.hasNext("N")
+               || scanner.hasNext("q") || scanner.hasNext("Q"))
       {
         // Clear Scanner buffer
         scanner.nextLine(); 
         return false;
       }
       else
+        // Clear Scanner buffer
+        scanner.nextLine();
         System.out.print("Invalid answer. Keep playing? (y/n): ");
     }
   }
