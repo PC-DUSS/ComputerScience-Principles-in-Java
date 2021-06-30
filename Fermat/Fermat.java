@@ -1,7 +1,9 @@
 import java.util.Scanner;
 
 
-/*Test if Fermat Law holds true*/
+/*
+ * Test if Fermat Law holds true
+ * */
 public class Fermat
 {
   public static void main(String[] args)
@@ -26,10 +28,10 @@ public class Fermat
 
     while (activeFlag)
     {
-      a = getA(scanner);
-      b = getB(scanner);
-      c = getC(scanner);
-      n = getN(scanner);
+      a = getInt(scanner, "a");
+      b = getInt(scanner, "b");
+      c = getInt(scanner, "c");
+      n = getInt(scanner, "n");
       if (!isFermatTrue(a, b, c, n))
       {
         System.out.println("Holy smokes, Fermat was wrong!");
@@ -43,17 +45,17 @@ public class Fermat
     }
   }
 
-  public static int getA(Scanner scanner)
+  public static int getInt(Scanner scanner, String label)
   {
     boolean askingForInteger = true;
-    int a = 0;
+    int myInt = 0;
 
     while (askingForInteger)
     {
-      System.out.print("Enter an integer value for 'a': ");
+      System.out.printf("Enter an integer value for '%s': ", label);
       if (scanner.hasNextInt())
       {
-        a = scanner.nextInt();
+        myInt = scanner.nextInt();
         askingForInteger = false;
       }
       else
@@ -62,73 +64,7 @@ public class Fermat
       }
     }
 
-    return a;
-  }
-
-  public static int getB(Scanner scanner)
-  {
-    boolean askingForInteger = true;
-    int b = 0;
-
-    while (askingForInteger)
-    {
-      System.out.print("Enter an integer value for 'b': ");
-      if (scanner.hasNextInt())
-      {
-        b = scanner.nextInt();
-        askingForInteger = false;
-      }
-      else
-      {
-        System.out.println("Invalid integer!");
-      }
-    }
-
-    return b;
-  }
-
-  public static int getC(Scanner scanner)
-  {
-    boolean askingForInteger = true;
-    int c = 0;
-
-    while (askingForInteger)
-    {
-      System.out.print("Enter an integer value for 'c': ");
-      if (scanner.hasNextInt())
-      {
-        c = scanner.nextInt();
-        askingForInteger = false;
-      }
-      else
-      {
-        System.out.println("Invalid integer!");
-      }
-    }
-
-    return c;
-  }
-
-  public static int getN(Scanner scanner)
-  {
-    boolean askingForInteger = true;
-    int n = 0;
-
-    while (askingForInteger)
-    {
-      System.out.print("Enter an integer value for 'n': ");
-      if (scanner.hasNextInt())
-      {
-        n = scanner.nextInt();
-        askingForInteger = false;
-      }
-      else
-      {
-        System.out.println("Invalid integer!");
-      }
-    }
-
-    return n;
+    return myInt;
   }
 
   public static boolean isFermatTrue(int a, int b, int c, int n)
