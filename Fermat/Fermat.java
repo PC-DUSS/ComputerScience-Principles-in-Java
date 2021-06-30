@@ -32,6 +32,7 @@ public class Fermat
       b = getInt(scanner, "b");
       c = getInt(scanner, "c");
       n = getInt(scanner, "n");
+
       if (!isFermatTrue(a, b, c, n))
       {
         System.out.println("Holy smokes, Fermat was wrong!");
@@ -47,19 +48,23 @@ public class Fermat
 
   public static int getInt(Scanner scanner, String label)
   {
-    boolean askingForInteger = true;
     int myInt = 0;
 
-    while (askingForInteger)
+    while (true)
     {
       System.out.printf("Enter an integer value for '%s': ", label);
+
       if (scanner.hasNextInt())
       {
         myInt = scanner.nextInt();
-        askingForInteger = false;
+        // Clear Scanner buffer
+        scanner.nextLine();
+        break;
       }
       else
       {
+        // Clear Scanner buffer
+        scanner.nextLine();
         System.out.println("Invalid integer!");
       }
     }

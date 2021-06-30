@@ -23,6 +23,9 @@ public class GuessNumber
     while (guessesRemaining > 0)
     {
       userGuess = in.nextInt();
+      // Clear Scanner buffer
+      in.nextLine();
+
       if (userGuess == myNumber)
       {
         System.out.println("Congratulations, you guessed right!");
