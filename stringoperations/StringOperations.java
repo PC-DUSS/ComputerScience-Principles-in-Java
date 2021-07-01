@@ -1,3 +1,6 @@
+
+
+
 public class StringOperations
 {
   public static void main(String[] args)
@@ -42,20 +45,31 @@ public class StringOperations
     System.out.println(diff);
     if (diff < 0)
     {
-      System.out.println("name1 comes before name2.");
+      System.out.println("name1 comes before name2\n");
     }
     else if (diff > 0)
     {
-      System.out.println("name2 comes before name1");
+      System.out.println("name2 comes before name1\n");
     }
     else
     {
-      System.out.println("The names are the same.");
+      System.out.println("The names are the same\n");
     }
     // The return value from compareTo is the difference between the first
     // characters in the strings that are not the same. In the preceding code,
     // compareTo returns positive 8, because the second letter of "Ada" comes
     // before the second letter of "Alan" by eight letters.
+    
+    String sampleAbecedarian = "acknow";
+    String sampleNotAbecedarian = "diggity";
+    String sampleCapitalizedAbecedarian = "AcKNoW";
+    String sampleNumberedAbecedarian = "123AcKNoW";
+
+    System.out.println(isAbecedarian(sampleAbecedarian));
+    System.out.println(isAbecedarian(sampleNotAbecedarian));
+    System.out.println(isAbecedarian(sampleCapitalizedAbecedarian));
+    // Should not be acceptedas input, should throw error
+    System.out.println(isAbecedarian(sampleNumberedAbecedarian));
   }
 
 
@@ -66,5 +80,44 @@ public class StringOperations
       reversed += str.charAt(i);
 
     return reversed;
+  }
+
+  public static boolean isAbecedarian(String str) 
+      throws IllegalArgumentException
+  {
+    // Initial char to get the loop running
+    char lastChar = 'A';
+
+    for (int x = 0; x < str.length(); x++)
+    {
+      // Lowercase all chars to avoid comparing uppercase with lowercase chars
+      char currentChar = Character.toLowerCase(str.charAt(x));
+
+      // Check that all chars are latin alphabet letters
+      if (currentChar <= 'a' || currentChar >= 'z')
+      {
+        throw new IllegalArgumentException("Invalid word. String must only "
+                                         + "contain latin alphabet letters.");
+      }
+
+      // If currentChar comes before lastChar in alphabetical order
+      if (Character.compare(currentChar, lastChar) < 0)
+      {
+        return false;
+      }
+
+      // Prepare to evaluate the next letter
+      lastChar = currentChar;
+    }
+
+    // If the loop completed without returning, then the word is an abecedarian
+    return true;
+  }
+
+  public static boolean isDoubloon(String str)
+  {
+    // TODO
+    
+    return true;
   }
 }
