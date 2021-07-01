@@ -84,6 +84,11 @@ public class StringOperations
     System.out.println(isDoubloon(wrongDoubloon));
     // Should not be acceptedas input, should throw error
     //System.out.println(isDoubloon(numberedDoubloon));
+    
+    String sampleLetterBank = "quijibo";
+    String sampleMadeWord = "jibi";
+
+    System.out.println(canSpell(sampleLetterBank, sampleMadeWord));
   }
 
 
@@ -132,21 +137,20 @@ public class StringOperations
 
   public static boolean isDoubloon(String str) throws IllegalArgumentException
   {
-    int count;
     char currentChar;
     char comparedChar;
-    char checkedChars[] = new char[50];
+    char checkedChars[] = new char[26];
+    int count;
 
     for (int currentCharIndex = 0;
          currentCharIndex < str.length();
          currentCharIndex++)
     {
       currentChar = str.toLowerCase().charAt(currentCharIndex);
+
+      // Check if currentChar has already been checked
       if (isPartOfArray(currentChar, checkedChars))
         continue;
-
-      // Reset count for each letter
-      count = 0;
 
       // Initial check so that all chars are latin alphabet letters
       if (currentChar < 'a' || currentChar > 'z')
@@ -157,37 +161,22 @@ public class StringOperations
         throw new IllegalArgumentException(errorMessage);
       }
 
-      for (int comparedCharIndex = 0;
-           comparedCharIndex < str.length() - currentCharIndex;
-           comparedCharIndex++)
-      {
-        comparedChar = str.toLowerCase().charAt(currentCharIndex
-                                                + comparedCharIndex);
+      count = countCharOccurence(currentChar, str);
 
-        if (currentChar == comparedChar)
-        {
-          count++;
-          if (count > 2)
-            return false;
-        }
-      }
-      
-      if (count < 2)
+      if (count != 2)
         return false;
 
-      // Will store duplicate chars, but it is less costly than putting an if
-      // statement and another loop inside this loop, and it won't end up
-      // mattering anyways
       checkedChars[currentCharIndex] = currentChar;
     }
     
+    // If the loop completed without returning, then the word is a doubloon
     return true;
   }
 
   public static boolean isPartOfArray(char theChar, char[] array)
   {
     /*
-    Other simpler ways exist to do this with preexisting methods in Java,
+    Other shorter ways exist to do this with preexisting methods in Java,
     namely converting to List then using contains(), but the point here is
     to practice problem solving using basic tools of the language. Data
     structures will come later
@@ -199,5 +188,46 @@ public class StringOperations
     }
 
     return false;
+  }
+
+  public static boolean canSpell(String letterBank, String madeWord)
+  {
+    char currentChar;
+    char checkedChars[] = new char[26];
+    int countInWord;
+    int countInBank;
+
+    // For each letter inside the formed word
+    for (int wordIndex = 0; wordIndex < madeWord.length(); wordIndex++)
+    {
+      currentChar = madeWord.charAt(wordIndex);
+
+      // Check if it has already been checked
+      if (isPartOfArray(currentChar, checkedChars))
+        continue;
+
+      countInWord = countCharOccurence(currentChar, madeWord);
+      countInBank = countCharOccurence(currentChar, letterBank);
+
+      if (countInWord > countInBank)
+        return false;
+
+      checkedChars[wordIndex] = currentChar;
+    }
+
+    return true;
+  }
+
+  public static int countCharOccurence(char myChar, String myString)
+  {
+    int count = 0;
+
+    for (int i = 0; i < myString.length(); i++)
+    {
+      if (myString.charAt(i) == myChar)
+        count++;
+    }
+
+    return count;
   }
 }
