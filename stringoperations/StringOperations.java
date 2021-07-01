@@ -35,7 +35,8 @@ public class StringOperations
     String subMessage2 = message.substring(2, 5);  // Starts on [2] Ends on [4]
     System.out.println(subMessage2);
     // See how its usage is different here
-    String subMessage3 = message.substring(3);  // Starts on [3] Ends on end of String
+    String subMessage3 = message.substring(3);  // Starts on [3] Ends on end
+                                                // of String
     System.out.println(subMessage3);
 
     // Compare Strings for alphabetical order
@@ -69,7 +70,20 @@ public class StringOperations
     System.out.println(isAbecedarian(sampleNotAbecedarian));
     System.out.println(isAbecedarian(sampleCapitalizedAbecedarian));
     // Should not be acceptedas input, should throw error
-    System.out.println(isAbecedarian(sampleNumberedAbecedarian));
+    //System.out.println(isAbecedarian(sampleNumberedAbecedarian));
+
+    // Notice the initialization of the String, how it differs from usual
+    // Strings are objects. Java just makes it easier for us to create them
+    // by providing a shortcut as if it were a Primitive, but it is not. It is
+    // an Object
+    String sampleDoubloon = new String("intestines");
+    String wrongDoubloon = new String("HelloWorld");
+    String numberedDoubloon = new String("int2estin2es");
+
+    System.out.println(isDoubloon(sampleDoubloon));
+    System.out.println(isDoubloon(wrongDoubloon));
+    // Should not be acceptedas input, should throw error
+    //System.out.println(isDoubloon(numberedDoubloon));
   }
 
 
@@ -94,10 +108,12 @@ public class StringOperations
       char currentChar = Character.toLowerCase(str.charAt(x));
 
       // Check that all chars are latin alphabet letters
-      if (currentChar <= 'a' || currentChar >= 'z')
+      if (currentChar < 'a' || currentChar > 'z')
       {
-        throw new IllegalArgumentException("Invalid word. String must only "
-                                         + "contain latin alphabet letters.");
+        String errorMessage = String.format(
+            "Invalid word \"%s\". String must only contain latin alphabet "
+            + "letters.", str);
+        throw new IllegalArgumentException(errorMessage);
       }
 
       // If currentChar comes before lastChar in alphabetical order
@@ -114,10 +130,74 @@ public class StringOperations
     return true;
   }
 
-  public static boolean isDoubloon(String str)
+  public static boolean isDoubloon(String str) throws IllegalArgumentException
   {
-    // TODO
+    int count;
+    char currentChar;
+    char comparedChar;
+    char checkedChars[] = new char[50];
+
+    for (int currentCharIndex = 0;
+         currentCharIndex < str.length();
+         currentCharIndex++)
+    {
+      currentChar = str.toLowerCase().charAt(currentCharIndex);
+      if (isPartOfArray(currentChar, checkedChars))
+        continue;
+
+      // Reset count for each letter
+      count = 0;
+
+      // Initial check so that all chars are latin alphabet letters
+      if (currentChar < 'a' || currentChar > 'z')
+      {
+        String errorMessage = String.format(
+            "Invalid word \"%s\". String must only contain latin alphabet "
+            + "letters.", str);
+        throw new IllegalArgumentException(errorMessage);
+      }
+
+      for (int comparedCharIndex = 0;
+           comparedCharIndex < str.length() - currentCharIndex;
+           comparedCharIndex++)
+      {
+        comparedChar = str.toLowerCase().charAt(currentCharIndex
+                                                + comparedCharIndex);
+
+        if (currentChar == comparedChar)
+        {
+          count++;
+          if (count > 2)
+            return false;
+        }
+      }
+      
+      if (count < 2)
+        return false;
+
+      // Will store duplicate chars, but it is less costly than putting an if
+      // statement and another loop inside this loop, and it won't end up
+      // mattering anyways
+      checkedChars[currentCharIndex] = currentChar;
+    }
     
     return true;
+  }
+
+  public static boolean isPartOfArray(char theChar, char[] array)
+  {
+    /*
+    Other simpler ways exist to do this with preexisting methods in Java,
+    namely converting to List then using contains(), but the point here is
+    to practice problem solving using basic tools of the language. Data
+    structures will come later
+    */
+    for (int i = 0; i < array.length; i++)
+    {
+      if (theChar == array[i])
+        return true;
+    }
+
+    return false;
   }
 }
