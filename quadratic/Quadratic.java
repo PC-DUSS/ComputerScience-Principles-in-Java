@@ -1,11 +1,13 @@
 import java.util.Scanner;
 
- 
+
 /* Program to calculate the roots of a quadratic function, according to
  * parameters given by the user.
- * 
+ *
+ * June 29, 2021
+ *
  * @author Pierre-Charles Dussault
- * @since  June 29, 2021
+ * @version 1.0 
  * */
 public class Quadratic
 {
@@ -49,7 +51,7 @@ public class Quadratic
 
       System.out.printf("The roots for this quadratic function are:\nx1: %f\n"
                         + "x2: %f\n", x1, x2);
-      
+
       if (!isKeepPlaying(scanner))
         break;
     }
@@ -141,7 +143,7 @@ public class Quadratic
                || scanner.hasNext("q") || scanner.hasNext("Q"))
       {
         // Clear Scanner buffer
-        scanner.nextLine(); 
+        scanner.nextLine();
         return false;
       }
       else

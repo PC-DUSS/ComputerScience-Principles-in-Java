@@ -1,5 +1,11 @@
-
-
+/*
+ * Class exploring different ways to manipulate strings.
+ *
+ * July 1, 2021
+ *
+ * @author Pierre-Charles Dussault
+ * @version 1.0
+ * */
 
 public class StringOperations
 {
@@ -23,12 +29,12 @@ public class StringOperations
     int indexOf_o_2 = message.indexOf('o', 5);  // Begin search at index: 5
     System.out.println(indexOf_o_2);
     // Note: indexOf will return -1 if no such char is found within the String
-    
+
     // You can also search for Strings inside a String
     int indexOf_String = message.indexOf("lro");
     System.out.println(indexOf_String);
     // This return the index of the start of the String where found
-  
+
     // substring() may also be useful. It is an 'overloaded' method
     String subMessage1 = message.substring(0, 3);  // Ends on [2]
     System.out.println(subMessage1);
@@ -60,7 +66,7 @@ public class StringOperations
     // characters in the strings that are not the same. In the preceding code,
     // compareTo returns positive 8, because the second letter of "Ada" comes
     // before the second letter of "Alan" by eight letters.
-    
+
     String sampleAbecedarian = "acknow";
     String sampleNotAbecedarian = "diggity";
     String sampleCapitalizedAbecedarian = "AcKNoW";
@@ -84,7 +90,7 @@ public class StringOperations
     System.out.println(isDoubloon(wrongDoubloon));
     // Should not be acceptedas input, should throw error
     //System.out.println(isDoubloon(numberedDoubloon));
-    
+
     String sampleLetterBank = "quijibo";
     String sampleMadeWord = "jibi";
 
@@ -139,7 +145,7 @@ public class StringOperations
   {
     char currentChar;
     char comparedChar;
-    char checkedChars[] = new char[26];
+    char[] checkedChars = new char[26];
     int count;
 
     for (int currentCharIndex = 0;
@@ -168,7 +174,7 @@ public class StringOperations
 
       checkedChars[currentCharIndex] = currentChar;
     }
-    
+
     // If the loop completed without returning, then the word is a doubloon
     return true;
   }
@@ -193,7 +199,7 @@ public class StringOperations
   public static boolean canSpell(String letterBank, String madeWord)
   {
     char currentChar;
-    char checkedChars[] = new char[26];
+    char[] checkedChars = new char[26];
     int countInWord;
     int countInBank;
 
