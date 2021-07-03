@@ -15,6 +15,7 @@ public class ArrayOperations
   public static void main(String[] args)
   {
     // Evaluate occurrences of random ints
+    System.out.println("\n----EVALUATING RANDOM INTS----\n");
     final int ARR_SIZE = 50000;
     final int RAND_RANGE = 101;
     int[] randomsTable = generateRandomsTable(RAND_RANGE, ARR_SIZE);
@@ -26,34 +27,51 @@ public class ArrayOperations
     }
 
     // Evaluate primes
+    System.out.println("\n----EVALUATING PRIMES----\n");
     final int ALGO_ARR_SIZE = 100;
     boolean[] whosPrime = sieve(ALGO_ARR_SIZE + 1);
     // Get a clean array of all the prime numbers
     int[] primesArray;
     primesArray = getArrayFromWhosPrime(whosPrime);
     // Now print out all the primes
-    System.out.println();
     for (int prime : primesArray)
     {
       System.out.println(prime);
     }
 
     // Evaluate indexOfMax
-    System.out.print("\n" + indexOfMax(primesArray) + " should be the "
-                       + "same as ");
-    System.out.println(24 + "\n");
+    System.out.println("\n----EVALUATING INDEXOFMAX----\n");
+    System.out.print(indexOfMax(primesArray) + " should be the same as ");
+    System.out.println(24);
 
     // Evaluate factors
+    System.out.println("\n----EVALUATING FACTORS----\n");
     int[] factorsOf100 = {2, 5, 10, 20, 50};
     int[] notFactorsOf100 = {2, 5, 10, 22, 55};
     System.out.println("should be true: " + areFactors(100, factorsOf100));
     System.out.println("should be false: " + areFactors(100, notFactorsOf100));
 
     // Evaluate letter histogram
+    System.out.println("\n----EVALUATING LETTER HISTOGRAM----\n");
     int[] letterHist;
     letterHist = letterHist("mombosa");
-    System.out.println("\n" + Arrays.toString(letterHist) + "\n");
+    System.out.println(Arrays.toString(letterHist) + "\n");
     displayFormattedLetterHist(letterHist);
+    // Test it using multiple words, separated by spaces
+    System.out.println("\n----EVALUATING LETTER HISTOGRAM FOR SPACED WORDS "
+                       + "(output should be 3x the values of the previous "
+                       + "histogram)----\n");
+    int[] spacedLetterHist;
+    spacedLetterHist = letterHist("mombosa mombosa mombosa");
+    System.out.println(Arrays.toString(spacedLetterHist) + "\n");
+    displayFormattedLetterHist(spacedLetterHist);
+
+    // Evaluate anagram, using letter histogram
+    System.out.println("\n----EVALUATING ANAGRAM----\n");
+    String originString = "christopher mayfield";
+    String candidateString = "hi prof the camel is dry";
+    System.out.println("should be true: "
+                       + isAnagram(originString, candidateString));
   }
 
 
@@ -255,6 +273,12 @@ public class ArrayOperations
 
     for (int i = 0; i < lowerStr.length(); i++)
     {
+      // Check if it is a space
+      if (lowerStr.charAt(i) == ' ')
+      {
+        continue;
+      }
+
       index = lowerStr.charAt(i) - 'a';
       letterHist[index]++;
     }
@@ -268,6 +292,23 @@ public class ArrayOperations
     {
       System.out.printf("letter \'%c\' appears %d times\n", i + 'a',
                                                            letterHist[i]);
+    }
+  }
+
+  public static boolean isAnagram(String originString, String candidateString)
+  {
+    int[] originLetterHist;
+    originLetterHist = letterHist(originString);
+    int[] candidateLetterHist;
+    candidateLetterHist = letterHist(candidateString);
+
+    if (Arrays.equals(originLetterHist, candidateLetterHist))
+    {
+      return true;
+    }
+    else
+    {
+      return false;
     }
   }
 }
