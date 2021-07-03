@@ -93,8 +93,12 @@ public class StringOperations
 
     String sampleLetterBank = "quijibo";
     String sampleMadeWord = "jibi";
-
     System.out.println(canSpell(sampleLetterBank, sampleMadeWord));
+
+    // Evaluate sum of all elements for n'th iteration of the Gauss series
+    double sumOfGaussElements = getSumForGauss(5.4, 10);
+    System.out.printf("\nSum of elements of the Gauss series up to the "
+                      + "%d\'th element: %.4f\n", 10, sumOfGaussElements);
   }
 
 
@@ -107,7 +111,53 @@ public class StringOperations
     return reversed;
   }
 
-  public static boolean isAbecedarian(String str) 
+  public static double getSumForGauss(double x, int n)
+  {
+    /* Return the sum of the first n terms of the gauss series*/
+    double sum = 0;
+    double currentGaussNumber;
+
+    for (int i = 0; i < n; i++)
+    {
+      currentGaussNumber = myPower(-1, i) * myPower(x, 2 * i)
+                           / (double) myFactorial(i);
+      sum += currentGaussNumber;
+    }
+
+    return sum;
+  }
+
+  public static double myPower(double base, double power)
+  {
+    int product = 1;
+    for (int i = 0; i < power; i++)
+    {
+      product *= base;
+    }
+
+    return product;
+  }
+
+  public static int myFactorial(int factorial)
+  {
+    if (factorial == 1)
+    {
+      return 1;
+    }
+    else if (factorial == 0)
+    {
+      return 1;
+    }
+
+    for (int i = factorial - 1; i >= 1; i--)
+    {
+      factorial *= i;
+    }
+
+    return factorial;
+  }
+
+  public static boolean isAbecedarian(String str)
       throws IllegalArgumentException
   {
     // Initial char to get the loop running
