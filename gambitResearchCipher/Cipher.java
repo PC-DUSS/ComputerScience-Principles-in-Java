@@ -1,5 +1,5 @@
-/*
- * Program to decipher the quiz at https://gambitresearch.com/quiz/
+/**
+ * Program to decipher the quiz at https://gambitresearch.com/quiz/ .
  *
  * @author Pierre-Charles Dussault
  * @version 1.0
