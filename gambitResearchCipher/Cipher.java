@@ -67,7 +67,7 @@ public class Cipher
   }
 
   /*
-   * Takes a char and 3 codifying parameters (secret keys)
+   * Takes a char, it attributed index and 3 codifying parameters (secret keys)
    *
    * Returns the codified int value of the char in single-char String format,
    * customizing the codifying algorithm based on its attributed index position
