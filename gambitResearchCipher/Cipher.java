@@ -1,3 +1,12 @@
+/*
+ * Program to decipher the quiz at https://gambitresearch.com/quiz/
+ *
+ * @author Pierre-Charles Dussault
+ * @version 1.0
+ * @since 07/07/2021
+ * */
+package gambitResearchCipher;
+
 import java.util.Arrays;
 
 
@@ -32,10 +41,16 @@ public class Cipher
   }
 
 
-  /*
-   * Takes a String message and 3 codifying parameters (secret keys)
+  /**
+   * Takes a message and 3 codifying parameters (secret keys), returns a
+   * cipher message.
    *
-   * Returns a String cipher message
+   * @param message String that you want to scramble.
+   * @param a int, first secret key.
+   * @param b int, second secret key.
+   * @param c int, third secret key.
+   *
+   * @return String, encrypted message.
    * */
   public static String scramble(String message, int a, int b, int c)
   {
@@ -47,11 +62,17 @@ public class Cipher
     return cipher;
   }
 
-  /*
-   * Takes a String array of one-char sized Strings, and 3 codifying
-   * parameters (secret keys)
+  /**
+   * Takes an array of one-char sized Strings, and 3 codifying
+   * parameters (secret keys).
    *
-   * Returns a String array of numbers representing the codified message
+   * @param message String[], an array of one-char Strings representing a
+   *                message to codify.
+   * @param a int, first secret key.
+   * @param b int, second secret key.
+   * @param c int, third secret key.
+   *
+   * @return String[], an array of numbers representing the codified message.
    * */
   public static String[] codify(String[] message, int a, int b, int c)
   {
@@ -66,12 +87,20 @@ public class Cipher
     return message;
   }
 
-  /*
+  /**
    * Takes a char, its attributed index and 3 codifying parameters (secret
-   * keys)
+   * keys), returns the codified int value of the char in single-char String
+   * format, modifying the codifying algorithm based on its attributed index
+   * position.
    *
-   * Returns the codified int value of the char in single-char String format,
-   * modifying the codifying algorithm based on its attributed index position
+   * @param currentChar char, the current char to evaluate.
+   * @param index int, the index to attribute to the codified char; will
+   *              influence the algorithm used to codify the char.
+   * @param a int, the first secret key.
+   * @param b int, the second secret key.
+   * @param c int, the first secret key.
+   *
+   * @return The codified value of the char, as a String.
    * */
   public static String theSecretCode(char currentChar, int index, int a,
                                      int b, int c)
@@ -91,10 +120,12 @@ public class Cipher
     return "" + ((code + c) % 256);
   }
 
-  /*
-   * Takes a char
+  /**
+   * Takes a char, returns the long unicode value of the char.
    *
-   * Returns the long unicode value of the char
+   * @param ch char, the char for whom to get the unicode value from.
+   *
+   * @return the unicode value of the char in long type format.
    * */
   public static long toUnicode(char ch)
   {
@@ -104,16 +135,17 @@ public class Cipher
     return unicodeLong;
   }
 
-  /*
-   * Takes a String cipher and a String keyword
+  /**
+   * Takes a String cipher and a String keyword; test possible values for
+   * codifying parameters (secret keys) a, b, c in the secret code, so that a
+   * matching keyword is found within the cipher; returns an int array
+   * representing the secret keys in the following format: {a, b, c}; not
+   * actually used: see getSecretParametersImproved() just below.
    *
-   * Test possible values for codifying parameters (secret keys) a, b, c in
-   * the secret code, so that a matching keyword is found within the cipher
+   * @param cipher String, the cipher to search.
+   * @param keyword String, the keyword to search for in the cipher.
    *
-   * Returns an int array representing the secret keys in the following
-   * format: {a, b, c}
-   *
-   * Not actually used. See getSecretParametersImproved() just below
+   * @return The secret keys that matched for the given keyword in the cipher.
    * */
   public static int[] getSecretParameters(String cipher, String keyword)
   {
@@ -137,20 +169,22 @@ public class Cipher
     return emptyParams;
   }
 
-  /*
-   * Takes a String cipher and a String keyword
-   *
-   * Test possible values for codifying parameters (secret keys) a, b, c in
-   * the secret code, so that a matching keyword is found within the cipher
-   *
-   * Returns an int[3] array representing plausible arrays of secret keys in
-   * the following format: {{a, b, c}, {a, b, c}, {a, b, c}, ...}
-   *
+  /**
+   * Takes a String cipher and a String keyword, test possible values for
+   * codifying parameters (secret keys) a, b, c in the secret code, so that
+   * a matching keyword is found within the cipher;
    * Like getSecretParameters, but in case multiple arrays of parameter values
    * match for the given keyword (multiple plausible arrays of secret keys
-   * exist)
+   * exist): this is the one I will be using.
    *
-   * This is the one I will be using
+   *
+   * @param cipher String, the cipher to search.
+   * @param keyword String, the keyword to search for in the cipher.
+   *
+   * @return an int[3] array representing plausible arrays of secret keys in
+   *         the following format: {{a, b, c}, {a, b, c}, {a, b, c}, ...}; it
+   *         is likely to only return one set of plausible keys, the other
+   *         sub-arrays being only empty ones.
    * */
   public static int[][] getSecretParametersImproved(String cipher,
                                                   String keyword)
@@ -178,7 +212,10 @@ public class Cipher
     return possibleParams;
   }
 
-  /*Display a 2D array*/
+  /**
+   * Display a 2D array.
+   *
+   * @param arr int[][], 2D array to print to std.out.*/
   public static void display2DArray(int[][] arr)
   {
     for (int i = 0; i < arr.length; i++)
@@ -187,12 +224,15 @@ public class Cipher
     }
   }
 
-  /*
-   * Now, time to descramble!
-   * Takes a String ciphered message and an int array of arrays of possible
-   * parameters
+  /**
+   * Descramble an encrypted message.
    *
-   * Returns the String descrambled message
+   * @param cipher String, the encrypted message to decrypt.
+   * @param paramArr int[][], 2D Array storing the plausible secret keys, each
+   *                 set of plausible keys being represented by each sub-array;
+   *                 it is likely to only contain one valid set of keys.
+   *
+   * @return String, the descrambled message
    * */
   public static String descramble(String cipher, int[][] paramArr)
   {
@@ -219,12 +259,17 @@ public class Cipher
     return decodedMessage;
   }
 
-  /*
-   * Takes an int array of coded char values, and the 3 codifying parameters
-   * (secret keys)
+  /**
+   * Decode each char (single-char String to be more precise) within an Array
+   * of codified chars (single-char Strings).
    *
-   * Returns an array of one-char Strings, each String representing a Unicode
-   * char that was held in the array of coded chars
+   * @param hiddenMessageArr String[], an array of codified char values.
+   * @param a int, the first secret key.
+   * @param b int, the second secret key.
+   * @param c int, the third secret key.
+   *
+   * @return an array of one-char Strings, each String representing a Unicode
+   *         char that was held in the array of coded chars.
    * */
   public static String[] decodeMessageArr(String[] hiddenMessageArr, int a,
                                           int b, int c)
