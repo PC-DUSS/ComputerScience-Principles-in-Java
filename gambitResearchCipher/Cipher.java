@@ -67,10 +67,11 @@ public class Cipher
   }
 
   /*
-   * Takes a char, its attributed index and 3 codifying parameters (secret keys)
+   * Takes a char, its attributed index and 3 codifying parameters (secret
+   * keys)
    *
    * Returns the codified int value of the char in single-char String format,
-   * customizing the codifying algorithm based on its attributed index position
+   * modifying the codifying algorithm based on its attributed index position
    * */
   public static String theSecretCode(char currentChar, int index, int a,
                                      int b, int c)
@@ -112,7 +113,7 @@ public class Cipher
    * Returns an int array representing the secret keys in the following
    * format: {a, b, c}
    *
-   * Not actually used. See getSecretParametersImproved()
+   * Not actually used. See getSecretParametersImproved() just below
    * */
   public static int[] getSecretParameters(String cipher, String keyword)
   {
@@ -142,11 +143,12 @@ public class Cipher
    * Test possible values for codifying parameters (secret keys) a, b, c in
    * the secret code, so that a matching keyword is found within the cipher
    *
-   * Returns an int[3] array representing plausible sets of secret keys in the
-   * following format: {{a, b, c}, {a, b, c}, {a, b, c}, ...}
+   * Returns an int[3] array representing plausible arrays of secret keys in
+   * the following format: {{a, b, c}, {a, b, c}, {a, b, c}, ...}
    *
-   * Like getSecretParameters, but in case multiple sets of parameter values
-   * match for the given keyword (multiple plausible sets of secret keys exist)
+   * Like getSecretParameters, but in case multiple arrays of parameter values
+   * match for the given keyword (multiple plausible arrays of secret keys
+   * exist)
    *
    * This is the one I will be using
    * */
@@ -187,7 +189,7 @@ public class Cipher
 
   /*
    * Now, time to descramble!
-   * Takes a String ciphered message and an int array of sets of possible
+   * Takes a String ciphered message and an int array of arrays of possible
    * parameters
    *
    * Returns the String descrambled message
