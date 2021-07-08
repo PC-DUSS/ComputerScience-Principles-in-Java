@@ -124,12 +124,11 @@ public class Recursion
   {
     if (bottles == 0)
     {
-      String songEnding = String.format("\nNo bottles of beer on the wall,\nno"
-                                      + " bottles of beer,\nya\' can\'t take"
-                                      + " one down, ya\' can\'t pass it "
-                                      + "around,\n\'cause there are no more "
-                                      + "bottles of beer on the wall!",
-                                      bottles, bottles, bottles - 1);
+      String songEnding = "\nNo bottles of beer on the wall,\nno"
+                          + " bottles of beer,\nya\' can\'t take"
+                          + " one down, ya\' can\'t pass it "
+                          + "around,\n\'cause there are no more "
+                          + "bottles of beer on the wall!";
       System.out.println(songEnding);
     }
     else
