@@ -1,4 +1,4 @@
-/*
+/**
  * Class to explore the manipulation of arrays.
  *
  * July 2, 2021
