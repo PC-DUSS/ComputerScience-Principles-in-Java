@@ -18,8 +18,6 @@ public class BigJava {
   /**
    * Produce tables of results for each factorial function in this class; showcase the limitations
    * of using ints in such a scenario, and how to overcome this limitation using BigIntegers.
-   *
-   * @return void
    */
   public static void runFactorials() {
 
@@ -30,8 +28,8 @@ public class BigJava {
   /**
    * Get the factorial of an integer n
    *
-   * @param n: int
-   * @return factorial: int
+   * @param n: int for which to produce the factorial
+   * @return factorial: int result of the factorial
    */
   public static int factorialIter(int n) throws IllegalArgumentException {
 
@@ -54,8 +52,7 @@ public class BigJava {
   /**
    * Print a table of the factorials of all ints up to a max of nMax to std_out.
    *
-   * @param nMax: int maximum value for which to produce the factorial
-   * @return void
+   * @param nMax: int maximum value for which to produce a factorial in the table
    */
   public static void factorialTable(int nMax) {
 
@@ -63,14 +60,14 @@ public class BigJava {
     if (nMax < 14) {
       for (int i = 0; i <= nMax; i++) {
         int factorial = factorialIter(i);
-        // Remember to add '\n' at the end, since printf doesn't add it on its own
+        // Add newline at the end, since printf doesn't add it on its own
         System.out.printf("factorial %d = %,d\n", i, factorial);
       }
       // Otherwise, use the BigInteger version of the function
     } else {
       for (int i = 0; i <= nMax; i++) {
         BigInteger factorial = bigFactorialIter(i);
-        // Remember to add '\n' at the end, since printf doesn't add it on its own
+        // Add newline at the end, since printf doesn't add it on its own
         System.out.printf("factorial %d = %,d\n", i, factorial);
       }
     }
@@ -80,8 +77,8 @@ public class BigJava {
   /**
    * Get the factorial of a BigInteger.
    *
-   * @param n: BigInteger
-   * @return factorial: BigInteger
+   * @param n: BigInteger for which to produce the factorial
+   * @return factorial: BigInteger result of the factorial
    */
   public static BigInteger bigFactorialIter(int n) throws IllegalArgumentException {
 
@@ -106,8 +103,8 @@ public class BigJava {
   /**
    * Increment a BigInteger.
    *
-   * @param n: BigInteger
-   * @return incremented_n: BigInteger
+   * @param n: BigInteger value to increment
+   * @return incremented_n: BigInteger result of incremented value
    */
   public static BigInteger increment(BigInteger n) {
 
@@ -117,7 +114,8 @@ public class BigJava {
   /**
    * Indicate, by true or false, if a BigInteger is negative.
    *
-   * @return isNegative: boolean
+   * @param n: BigInteger to check if is negative
+   * @return isNegative: boolean is n negative?
    */
   public static boolean isNegative(BigInteger n) {
 
@@ -132,8 +130,6 @@ public class BigJava {
   /**
    * Test if factorialIter(int n) is working as inteded, and that is has proper error handling of
    * when n is negative.
-   *
-   * @return void
    */
   public static void factorialIterTest() {
 
@@ -174,10 +170,8 @@ public class BigJava {
   }
 
   /**
-   * Test is bigFactorialIter(int n) is working as intended, and that it has proper error handling
+   * Test if bigFactorialIter(int n) is working as intended, and that it has proper error handling
    * when n is negative.
-   *
-   * @return void
    */
   public static void bigFactorialIterTest() {
 
@@ -223,11 +217,7 @@ public class BigJava {
     }
   }
 
-  /**
-   * Run all tests.
-   *
-   * @return void
-   */
+  /** Run all tests. */
   public static void runTests() {
 
     System.out.println();
