@@ -1,3 +1,4 @@
+import java.io.*;
 import java.util.Arrays;
 
 /**
@@ -33,8 +34,9 @@ public class Cipher {
     System.out.println("Plausible sets of secret keys:\n");
     display2DArray(secretParams);
     System.out.println("\nPossible secret messages:\n");
-    String decodedMessage = descramble(cipher, secretParams);
-    System.out.println(decodedMessage + "\n");
+    String[] decodedMessages = descramble(cipher, secretParams);
+    displayManyMessages(decodedMessages);
+    saveMessagesToFile(decodedMessages, "textSolutions.txt");
   }
 
   /**
@@ -197,26 +199,30 @@ public class Cipher {
    * @param cipher String, the encrypted message to decrypt.
    * @param paramArr int[][], 2D Array storing the plausible secret keys, each set of plausible keys
    *     being represented by each sub-array; it is likely to only contain one valid set of keys.
-   * @return String, the descrambled message
+   * @return String[], array of the descrambled messages
    */
-  public static String descramble(String cipher, int[][] paramArr) {
+  public static String[] descramble(String cipher, int[][] paramArr) {
 
-    String decodedMessage = "empty_string";
+    String[] decodedMessages = new String[paramArr.length];
     int[] emptyArr = new int[paramArr[0].length];
 
     // For each set of matching parameters
     for (int i = 0; i < paramArr.length; i++) {
       // If the set is a valid set, and not just an empty set (... yes we
-      // assume that a=0, b=0, c=0 or {0, 0, 0} is not an intentionally
-      // valid set)
+      // assume that {0, 0, 0} is not an intentionally valid set)
       if (!(Arrays.equals(paramArr[i], emptyArr))) {
-        String[] hiddenMessageArr = cipher.split(" "); // Checked working
+        // Store the numbers from the cipher in an array
+        String[] hiddenMessageArr = cipher.split(" ");
+        // Get the hidden char for each number using the decoding algorithm
         String[] decodedMessageArr =
             decodeMessageArr(hiddenMessageArr, paramArr[i][0], paramArr[i][1], paramArr[i][2]);
-        decodedMessage = String.join("", decodedMessageArr);
+
+        // Join all the chars in a single String, and store that String in the same index as the
+        // index of the set of secret keys {a, b, c} from paramArr used to decode the String
+        decodedMessages[i] = String.join("", decodedMessageArr);
       }
     }
-    return decodedMessage;
+    return decodedMessages;
   }
 
   /**
@@ -254,5 +260,36 @@ public class Cipher {
       }
     }
     return decodedMessageArr;
+  }
+
+  /** Print an array of messages to std_out, in a prettier way than default. */
+  public static void displayManyMessages(String[] messagesArr) {
+
+    for (int i = 0; i < messagesArr.length; i++) {
+      System.out.printf("\n%s\n", messagesArr[i]);
+    }
+  }
+
+  /**
+   * Save the possible messages to an external file.
+   *
+   * @param messagesArr, String[] array of messages to save.
+   * @param filename, String desired name for the file.
+   */
+  public static void saveMessagesToFile(String[] messagesArr, String filename) {
+
+    try {
+      FileWriter fileStream = new FileWriter(filename);
+      BufferedWriter myFile = new BufferedWriter(fileStream);
+
+      myFile.write("Possible secret messages: \n");
+      for (int i = 0; i < messagesArr.length; i++) {
+        String formattedMessage = String.format("\n%s\n", messagesArr[i]);
+        myFile.write(formattedMessage);
+      }
+      myFile.close();
+    } catch (Exception e) {
+      System.err.printf("Error: %s\n", e.getMessage());
+    }
   }
 }
