@@ -46,11 +46,11 @@ public class BigPower {
 
     BigInteger t = bigPow(x, n / 2);
 
-    // If n is odd
+    // If n is even
     if (n % 2 == 0) {
       return t.multiply(t); // return t * t;
     }
-    // If n is even
+    // If n is odd
     return t.multiply(t.multiply(new BigInteger("" + x))); // return t * t * x;
   }
 }
