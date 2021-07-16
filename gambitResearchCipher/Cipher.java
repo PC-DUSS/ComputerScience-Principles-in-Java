@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 /**
  * Program to decipher the quiz at https://gambitresearch.com/quiz/ .
  *
@@ -5,10 +7,6 @@
  * @version 1.0
  * @since 07/07/2021
  */
-package gambitResearchCipher;
-
-import java.util.Arrays;
-
 public class Cipher {
 
   public static void main(String[] args) {
