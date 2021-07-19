@@ -40,6 +40,13 @@ public class Main {
         return a;
     }
 
+    /**
+     * Get the n'th power of base x.
+     *
+     * @param x: double base value
+     * @param n: power to which you wish to raise the base x
+     * @return double base x raised to the n'th power
+     * */
     public static double power(double x, int n) {
 
         if (n == 0) {
