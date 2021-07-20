@@ -8,8 +8,6 @@ public class ManyMickeys extends Canvas {
 
   private static final long serialVersionUID = 228347824L;
 
-  // Number of iterations for which to draw mickeys
-  public static int numOfMickeys = 4;
   // Frame settings
   private static int totalWidth = 400;
   private static int totalHeight = 400;
@@ -28,6 +26,9 @@ public class ManyMickeys extends Canvas {
       new Rectangle(mainRectX, mainRectY, mainRectWidth, mainRectHeight);
   public static Rectangle circleRect =
       new Rectangle(circleRectX, circleRectY, circleRectWidth, circleRectHeight);
+  // Number of iterations for which to draw mickey: customize this to play with the size of the
+  // fractal
+  public static int iterationsOfMickeys = 4;
 
   /* ----- Main Program ----- */
   public static void main(String[] args) {
@@ -125,11 +126,11 @@ public class ManyMickeys extends Canvas {
    */
   public void drawManyMickeys(Graphics graphics, Rectangle startingRect) {
 
-    Rectangle[] mickeysToDo = new Rectangle[power(2, numOfMickeys)];
+    Rectangle[] mickeysToDo = new Rectangle[power(2, iterationsOfMickeys)];
     // Rectangle for the initial mickey
     mickeysToDo[0] = startingRect;
 
-    for (int i = 0; i < numOfMickeys; i++) {
+    for (int i = 0; i < iterationsOfMickeys; i++) {
       mickeysToDo = drawMickeysAndReturnNextMickeys(graphics, mickeysToDo, power(2, i));
     }
   }
