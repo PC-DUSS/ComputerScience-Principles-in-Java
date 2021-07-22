@@ -21,7 +21,7 @@ public class ManyMickeys extends Canvas {
   private static int circleRectHeight = totalHeight / 4;
   private static int circleRectX = (mainRectWidth + mainRectX) / 2 - circleRectWidth / 2;
   private static int circleRectY = (mainRectHeight + mainRectY) / 2 - circleRectHeight / 2;
-  // Now instanciate the Rectangles
+  // Now instantiate the Rectangles
   public static Rectangle mainRect =
       new Rectangle(mainRectX, mainRectY, mainRectWidth, mainRectHeight);
   public static Rectangle circleRect =
