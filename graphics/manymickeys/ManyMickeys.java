@@ -135,10 +135,11 @@ public class ManyMickeys extends Canvas {
     }
   }
 
-  /*Custom method for raising base x to a power n.
-
-  @param x int base number
-  @param n int power to which to raise the base number
+  /**
+  * Custom method for raising base x to a power n.
+  *
+  * @param x int base number
+  * @param n int power to which to raise the base number
   */
   public static int power(int x, int n) {
 
