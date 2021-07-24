@@ -656,16 +656,17 @@ public class Rational {
     int comp1 = 12;
     int comp2 = 8;
     int prime = 7;
-    int lcmComposites = getLeastCommonMultiple(comp1, comp2);
+    int lcmWithComposites = getLeastCommonMultiple(comp1, comp2);
     int lcmWithPrime = getLeastCommonMultiple(comp1, prime);
     int lcmWithZero = getLeastCommonMultiple(0, 5);
     // the least common multiple should always be a positive number
-    int lcmNegatives = getLeastCommonMultiple(comp1, -comp2);
-    int expectedComposites = 24;
+    int lcmWithNegative = getLeastCommonMultiple(comp1, -comp2);
+    int expectedWithComposites = 24;
     int expectedWithPrime = 84;
     int expectedWithZero = 0;
+    int expectedWithNegative = expectedWithComposites;
 
-    if (lcmComposites == expectedComposites) {
+    if (lcmWithComposites == expectedWithComposites) {
       System.out.println("\tCase composites: pass");
     } else {
       System.out.println("\tCase composites: FAIL!!!");
@@ -681,6 +682,12 @@ public class Rational {
       System.out.println("\tCase with zero: pass");
     } else {
       System.out.println("\tCase with zero: FAIL!!!");
+    }
+
+    if (lcmWithNegative == expectedWithNegative) {
+      System.out.println("\tCase with negative: pass");
+    } else {
+      System.out.println("\tCase with negative: FAIL!!!");
     }
   }
 
