@@ -13,10 +13,10 @@ public class Card {
 
   /*
     Card ranks encoding:
-    - Ace => 1
-    - Jack => 11
-    - Queen => 12
-    - King => 13
+    - Jack => 10
+    - Queen => 11
+    - King => 12
+    - Ace => 13
 
     Card symbol (suit) encoding:
     - Clubs => 0
@@ -39,9 +39,9 @@ public class Card {
   /* ----- Main Program ----- */
   public static void main(String[] args) {
 
-    Card threeOfClubs = new Card(3, 0);
+    Card threeOfClubs = new Card(2, 0);
     System.out.println(threeOfClubs);
-    Card jackOfDiamonds = new Card(11, 1);
+    Card jackOfDiamonds = new Card(10, 1);
     System.out.println(jackOfDiamonds);
 
     // Let's create an empty array of 52 Cards, kind of like a deck of cards. Remember, it actually
@@ -74,12 +74,48 @@ public class Card {
     System.out.println("Binary search for Ace of Clubs: " + binarySearch(cards, new Card(13, 0)));
 
     System.out.println();
+    Card aceOfClubs = new Card(13, 0);
+    Card[] cardsMissingAceOfClubs = generateCardsMissing(aceOfClubs);
     System.out.println(
         "Sequential search for Ace of Clubs when absent: "
-            + sequentialSearch(generateCardsMissing(new Card(13, 0)), new Card(13, 0)));
+            + sequentialSearch(cardsMissingAceOfClubs, aceOfClubs));
     System.out.println(
         "Binary search for Ace of Clubs when absent: "
-            + binarySearch(generateCardsMissing(new Card(13, 0)), new Card(13, 0)));
+            + binarySearch(cardsMissingAceOfClubs, aceOfClubs));
+
+    // Testing for Card suit frequency histogram, flush and royal flush
+    System.out.println();
+    System.out.println(
+        "Suit histogram with full array of Cards: " + Arrays.toString(suitHist(cards)));
+    System.out.println(
+        "Suit histogram with incomplete array of Cards (missing Ace of Clubs): "
+            + Arrays.toString(suitHist(cardsMissingAceOfClubs)));
+    Card kingOfClubs = new Card(12, 0);
+    Card queenOfClubs = new Card(11, 0);
+    Card jackOfClubs = new Card(10, 0);
+    Card tenOfClubs = new Card(9, 0);
+    Card[] royalFlush = {tenOfClubs, jackOfClubs, queenOfClubs, kingOfClubs, aceOfClubs};
+    Card twoOfClubs = new Card(1, 0);
+    Card fourOfClubs = new Card(3, 0);
+    Card fiveOfClubs = new Card(4, 0);
+    Card[] standardFlush = {aceOfClubs, twoOfClubs, threeOfClubs, fourOfClubs, fiveOfClubs};
+    // Notice the imposter jackOfDiamonds
+    Card[] incompleteFlush = {tenOfClubs, jackOfDiamonds, queenOfClubs, kingOfClubs, aceOfClubs};
+    System.out.println(
+        "\nCheck if a valid hand contains a standard flush: " + hasFlush(standardFlush));
+    System.out.println(
+        "Check if an invalid hand contains a standard flush: " + hasFlush(incompleteFlush));
+
+    System.out.println(
+        "\nCheck complete histogram for complete array of Cards: "
+            + Arrays.toString(cardHist(cards)));
+    System.out.println(
+        "\nCheck complete histogram for an incomplete array of Cards: "
+            + Arrays.toString(cardHist(cardsMissingAceOfClubs)));
+    System.out.println("\nCheck for royal flush in valid hand: " + hasRoyal(royalFlush));
+    System.out.println("\nCheck for royal flush in invalid hand: " + hasRoyal(incompleteFlush));
+    System.out.println(
+        "\nCheck for royal flush in standard flush hand: " + hasRoyal(standardFlush));
   }
   /* ----- End of Main Program ----- */
 
@@ -318,5 +354,111 @@ public class Card {
     // If the return statement in the loop was never triggered, then the Card is absent from the
     // array
     return -1;
+  }
+
+  /**
+   * Get a histogram for the frequency of Cards belonging to each suit in a given array of Cards.
+   *
+   * @param cards Card[] array of Cards
+   * @return an int[] array histogram for the frequency of Cards in each suit. [0] is Clubs, [1] is
+   *     Diamonds, [2] is Hearts and [3] is Spades
+   */
+  public static int[] suitHist(Card[] cards) {
+
+    // Array to represent Card suits (0: Clubs, 1: Diamonds, 2: Hearts, 3: Spades)
+    int[] hist = new int[4];
+
+    // For each Card in the array of Cards
+    for (int i = 0; i < cards.length; i++) {
+      // Get its suit
+      int currentSuit = cards[i].suit;
+      // Increment the histogram amount for this suit
+      hist[currentSuit]++;
+    }
+
+    return hist;
+  }
+
+  /**
+   * Check to see if a hand contains a flush (five or more cards of the same suit).
+   *
+   * @param cards Card[] array of Cards, the hand you want to examine
+   * @return true of false, depending on whether the hand contains a flush or not
+   */
+  public static boolean hasFlush(Card[] cards) {
+
+    // Get a histogram for the sutis of all the Cards present in the hand
+    int[] hist = suitHist(cards);
+
+    // For each suit
+    for (int i = 0; i < hist.length; i++) {
+      // If the number of Cards frmo that suit in the given hand equals or exceeds 5
+      if (hist[i] >= 5) {
+        // Then the hand contains a flush
+        return true;
+      }
+    }
+
+    // If no return statement was triggered, then there is no flush
+    return false;
+  }
+
+  /**
+   * Get a histogram of frequencies for each Card in an array of Cards.
+   *
+   * @param cards Card[] given array of Cards to examine
+   * @return a histogram of frequencies for each possible standard Card in a deck, meaning
+   *     exlcluding Wildcards
+   */
+  public static int[] cardHist(Card[] cards) {
+
+    // Histogram for all possible standard Cards
+    int hist[] = new int[52];
+
+    // For each Card inside the hand
+    for (int i = 0; i < cards.length; i++) {
+      // Determine the index of the current Card in the histogram
+      int cardIndex = (cards[i].suit * 13) + cards[i].rank - 1;
+      hist[cardIndex]++;
+    }
+
+    return hist;
+  }
+
+  /**
+   * Check if a hand contains a royal flush, or the sequence: 10, jack, queen, king, ace for a same
+   * Card suit.
+   *
+   * @param cards Card[] given array of Cards
+   * @return true of false, depending on if the hand contains a royal flush or not
+   */
+  public static boolean hasRoyal(Card[] cards) {
+
+    // Get frequencies for all cards in the examined hand
+    int[] hist = cardHist(cards);
+
+    // Test print the Card histogram to see whats up
+    System.out.println(Arrays.toString(hist));
+
+    // If any type of royal flush is present:
+    // Clubs royal flush
+    if (hist[8] >= 1 && hist[9] >= 1 && hist[10] >= 1 && hist[11] >= 1 && hist[12] >= 1) {
+      return true;
+
+      // Diamonds royal flush
+    } else if (hist[21] >= 1 && hist[22] >= 1 && hist[23] >= 1 && hist[24] >= 1 && hist[25] >= 1) {
+      return true;
+
+      // Hearts royal flush
+    } else if (hist[34] >= 1 && hist[35] >= 1 && hist[36] >= 1 && hist[37] >= 1 && hist[38] >= 1) {
+      return true;
+
+      // Spades royal flush
+    } else if (hist[47] >= 1 && hist[48] >= 1 && hist[49] >= 1 && hist[50] >= 1 && hist[51] >= 1) {
+      return true;
+    }
+
+    // If no royal flush condition has triggered a return statement, then return false
+    return false;
   }
 }
