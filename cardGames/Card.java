@@ -116,6 +116,12 @@ public class Card {
     System.out.println("\nCheck for royal flush in invalid hand: " + hasRoyal(incompleteFlush));
     System.out.println(
         "\nCheck for royal flush in standard flush hand: " + hasRoyal(standardFlush));
+
+    // Test Fisher-Yates shuffle
+    System.out.println("\nTesting Fisher-Yates shuffle on array of Cards:");
+    Card[] cardsToShuffle = generateCards();
+    shuffleCards(cardsToShuffle);
+    printCardArray(cardsToShuffle);
   }
   /* ----- End of Main Program ----- */
 
@@ -387,12 +393,12 @@ public class Card {
    */
   public static boolean hasFlush(Card[] cards) {
 
-    // Get a histogram for the sutis of all the Cards present in the hand
+    // Get a histogram for the suits of all the Cards present in the hand
     int[] hist = suitHist(cards);
 
     // For each suit
     for (int i = 0; i < hist.length; i++) {
-      // If the number of Cards frmo that suit in the given hand equals or exceeds 5
+      // If the number of Cards from that suit in the given hand equals or exceeds 5
       if (hist[i] >= 5) {
         // Then the hand contains a flush
         return true;
@@ -460,5 +466,38 @@ public class Card {
 
     // If no royal flush condition has triggered a return statement, then return false
     return false;
+  }
+
+  /**
+   * Fisher-Yates shuffle to randomize an array of Cards.
+   *
+   * @param cards Card[] array of Cards
+   */
+  public static void shuffleCards(Card[] cards) {
+
+    // The shuffle starts from the back and moves towards the front. lengthToShuffle also represents
+    // the current Card being shuffled
+    int lengthToShuffle = cards.length;
+    // Temporary variable to hold the current Card being shuffled
+    Card tmp;
+    // Card to swap with the shuffled Card
+    int randomSwap;
+
+    // While there remains cards that need to be shuffled
+    while (lengthToShuffle > 0) {
+
+      // Pick a random index for the card to shuffle from [0 - (lengthToShuffle - 1)]
+      randomSwap = (int) Math.floor(Math.random() * (double) (lengthToShuffle - 1));
+      // Hold the swap card in temporary variable
+      tmp = cards[lengthToShuffle - 1];
+      // Swap the randomly selected card to the back of the array of Cards, in the place of the
+      // shuffled Card
+      cards[lengthToShuffle - 1] = cards[randomSwap];
+      // Place the Card currently being shuffled in place of the randomly selected swap Card
+      cards[randomSwap] = tmp;
+
+      // Decrement the length of cards to shuffle (also points to the current Card being shuffled)
+      lengthToShuffle--;
+    }
   }
 }
