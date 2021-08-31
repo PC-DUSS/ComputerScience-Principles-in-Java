@@ -36,6 +36,9 @@ public class Card {
   // Suits start at index position 0
   public static final String[] SUITS = {"Clubs", "Diamonds", "Hearts", "Spades"};
 
+  // Can we see the Card's value, or only the back cover
+  private boolean faceUp;
+
   /* ----- Main Program ----- */
   public static void main(String[] args) {
 
@@ -122,8 +125,7 @@ public class Card {
     Card[] cardsToShuffle = generateCards();
     shuffleCards(cardsToShuffle);
     printCardArray(cardsToShuffle);
-  }
-  /* ----- End of Main Program ----- */
+  } // end of Main Program
 
   /**
    * Value constructor; the default constructor is not very useful here; refer to the class
@@ -146,6 +148,8 @@ public class Card {
     // else
     this.rank = rank;
     this.suit = suit;
+    // By default we should only see the back of the Card
+    this.faceUp = false;
   }
 
   /* ----- Getters  ----- */
@@ -157,6 +161,22 @@ public class Card {
   public int getSuit() {
 
     return this.suit;
+  }
+
+  public boolean getCardFace() {
+
+    return this.faceUp;
+  }
+
+  /* ----- Setters ----- */
+  public void setFaceUp() {
+
+    this.faceUp = true;
+  }
+
+  public void setFaceDown() {
+
+    this.faceUp = false;
   }
 
   /**
@@ -190,12 +210,19 @@ public class Card {
   public int compareTo(Card other) {
 
     if (this.suit > other.suit) {
+
       return 1;
+
     } else if (this.suit < other.suit) {
+
       return -1;
+
     } else if (this.rank > other.rank) {
+
       return 1;
+
     } else if (this.rank < other.rank) {
+
       return -1;
     }
 
@@ -241,11 +268,11 @@ public class Card {
     int index = 0;
 
     for (int lSuit = 0; lSuit < SUITS.length; lSuit++) {
-
       for (int lRank = 1; lRank < RANKS.length; lRank++) {
 
         Card lCard = new Card(lRank, lSuit);
         if (!(lCard.equals(missingCard))) {
+
           incompleteCards[index] = lCard;
           index++;
         }
@@ -263,6 +290,7 @@ public class Card {
   public static void printCardArray(Card[] cards) {
 
     for (Card card : cards) {
+
       System.out.println(card);
     }
   }
@@ -285,6 +313,7 @@ public class Card {
 
       // If the currently searched card is equivalent to the target
       if (cards[i].equals(target)) {
+
         // Return the index position of the currently search card
         return i;
       }
@@ -340,17 +369,20 @@ public class Card {
 
       // If it is equivalent to the target
       if (comparison == 0) {
+
         // Return its index
         return index;
 
         // If it is lesser than the target
       } else if (comparison == -1) {
+
         // The new domain becomes restricted to the upper half of the previous domain, EXCLUDING the
         // index of the just found middle point
         low = index + 1;
 
         // If it is greater than the target
       } else {
+
         // The new domain becomes restricted to the lower half of the previous domain, EXCLUDING the
         // index of the just found middle point
         high = index - 1;
@@ -376,6 +408,7 @@ public class Card {
 
     // For each Card in the array of Cards
     for (int i = 0; i < cards.length; i++) {
+
       // Get its suit
       int currentSuit = cards[i].suit;
       // Increment the histogram amount for this suit
@@ -398,8 +431,10 @@ public class Card {
 
     // For each suit
     for (int i = 0; i < hist.length; i++) {
+
       // If the number of Cards from that suit in the given hand equals or exceeds 5
       if (hist[i] >= 5) {
+
         // Then the hand contains a flush
         return true;
       }
@@ -423,6 +458,7 @@ public class Card {
 
     // For each Card inside the hand
     for (int i = 0; i < cards.length; i++) {
+
       // Determine the index of the current Card in the histogram
       int cardIndex = (cards[i].suit * 13) + cards[i].rank - 1;
       hist[cardIndex]++;
@@ -449,18 +485,22 @@ public class Card {
     // If any type of royal flush is present:
     // Clubs royal flush
     if (hist[8] >= 1 && hist[9] >= 1 && hist[10] >= 1 && hist[11] >= 1 && hist[12] >= 1) {
+
       return true;
 
       // Diamonds royal flush
     } else if (hist[21] >= 1 && hist[22] >= 1 && hist[23] >= 1 && hist[24] >= 1 && hist[25] >= 1) {
+
       return true;
 
       // Hearts royal flush
     } else if (hist[34] >= 1 && hist[35] >= 1 && hist[36] >= 1 && hist[37] >= 1 && hist[38] >= 1) {
+
       return true;
 
       // Spades royal flush
     } else if (hist[47] >= 1 && hist[48] >= 1 && hist[49] >= 1 && hist[50] >= 1 && hist[51] >= 1) {
+
       return true;
     }
 
@@ -495,7 +535,6 @@ public class Card {
       cards[lengthToShuffle - 1] = cards[randomSwap];
       // Place the Card currently being shuffled in place of the randomly selected swap Card
       cards[randomSwap] = tmp;
-
       // Decrement the length of cards to shuffle (also points to the current Card being shuffled)
       lengthToShuffle--;
     }
