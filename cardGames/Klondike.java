@@ -5,6 +5,13 @@ import java.awt.Image;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
+/**
+ * Game board for the classic Solitaire card game, Klondike.
+ *
+ * @author Pierre-Charles Dussault
+ * @since 2021/07/27
+ * @version 1.0
+ */
 public class Klondike extends Canvas {
 
   // Extending class, give new unique serial version identifier
@@ -139,6 +146,8 @@ public class Klondike extends Canvas {
     // Load the respective images for each suit's empty stack in the header row
     for (int suit = 0; suit < 4; suit++) {
 
+      // The "suit + 4" is simply because of the way the image files are named. The numbering starts
+      // at 4 for the Card suit images in the images folder
       String emptyStackImageFileName = String.format("%s/bottom%02d.gif", imagesFolder, suit + 4);
       // Card suit stacks in the header row start at the 4th column in the image grid
       images[3 + suit][0] = new ImageIcon(emptyStackImageFileName).getImage();
@@ -153,11 +162,11 @@ public class Klondike extends Canvas {
     cardWidth = images[0][0].getWidth(null);
     cardHeight = images[0][0].getHeight(null);
 
-    // Set the size of the Table to get the insets(I don't quite understand this one to be honest)
     // Give extra room on the horizontal axis (2 extra columns worth of space in total)
     int extraSpacing = 2;
     int columns = 7 + extraSpacing;
     int rows = 5;
+    // Set the size of the Table to get the insets
     setTableSize(columns, rows);
   } // end of constructor
 
@@ -254,7 +263,7 @@ public class Klondike extends Canvas {
 
   /**
    * Get the filename for the current Card. Example format of a filename:
-   * "../carset-oxymoron/09h.gif" --> image for the 9 of Hearts
+   * "../cardset-oxymoron/09h.gif" --> image for the 9 of Hearts
    */
   public String getCardImageFileName(Card[] cards, int index) {
 
@@ -278,5 +287,5 @@ public class Klondike extends Canvas {
     frame.add(gameBoard);
     frame.pack();
     frame.setVisible(true);
-  }
+  } // end of Main Program
 }
