@@ -263,7 +263,11 @@ public class Klondike extends Canvas {
 
   /**
    * Get the filename for the current Card. Example format of a filename:
-   * "../cardset-oxymoron/09h.gif" --> image for the 9 of Hearts
+   * "../cardset-oxymoron/09h.gif" --> image for the 9 of Hearts.
+   *
+   * @param cards Card[] array from which to get a Card for which we want the image
+   * @param index int index number of the Card in the Card[] array for which to get the image
+   * @return a String filename of the image to get for the given Card
    */
   public String getCardImageFileName(Card[] cards, int index) {
 
