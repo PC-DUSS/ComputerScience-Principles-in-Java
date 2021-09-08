@@ -60,10 +60,11 @@ public class Deck {
   /** Shuffle all the cards in a deck. */
   public void shuffle() {
 
-    // Swap the current i'th card with the randomly picked card
+    // Swap the current i'th card with a randomly picked card
     for (int i = 0; i < this.length; i++) {
 
-      this.swapCards(i, this.length - 1);
+      int randomIndex = randomInt(i, this.length - 1);
+      this.swapCards(i, randomIndex);
     }
   }
 
@@ -87,25 +88,24 @@ public class Deck {
    */
   private void swapCards(int i, int j) {
 
-    int randomIndex = randomInt(i, j);
     Card tmp = this.cards[i];
-    this.cards[i] = this.cards[randomIndex];
-    this.cards[randomIndex] = tmp;
+    this.cards[i] = this.cards[j];
+    this.cards[j] = tmp;
   }
 
   /**
-   * Sort cards in a deck, by traversing the deck and placing the lowest card behind the previously
-   * placed lowest card, or at the beginning of the deck if this is the first card being placed.
+   * Sort cards in a deck, by traversing the deck and placing the lowest card just after the
+   * previously placed lowest card, or at the beginning of the deck if this is the first card being
+   * placed.
    */
   public void selectionSort() {
 
-    int cardArrLength = this.length;
-    for (int i = 0; i < cardArrLength; i++) {
+    for (int i = 0; i < this.length; i++) {
 
       // Find the lowest card to the right of i inclusively
-      int indexOfLowest = indexLowest(i, cardArrLength - 1);
+      int currentLowestIndex = indexLowest(i, this.length - 1);
       // Swap the i'th card with the lowest card found
-      this.swapCards(i, indexOfLowest);
+      this.swapCards(i, currentLowestIndex);
     }
   }
 
@@ -223,14 +223,23 @@ public class Deck {
     return d3;
   }
 
+  /**
+   * Simplified version of mergeSort: sorts the cards from a deck.
+   *
+   * @return the resulting sorted deck of cards
+   */
   public Deck almostMergeSort() {
 
     // Divide the deck into 2 subdecks
+    Deck subdeck1 = this.subdeck(0, 25);
+    Deck subdeck2 = this.subdeck(26, 51);
     // Sort the subdecks using selectionSort
+    subdeck1.selectionSort();
+    subdeck2.selectionSort();
     // Merge the 2 subdecks into a new deck and return the result deck
+    Deck resultDeck = merge(subdeck1, subdeck2);
 
-    // Stub
-    return new Deck();
+    return resultDeck;
   }
 
   public Deck mergeSort() {
@@ -267,32 +276,32 @@ public class Deck {
 
     Deck deck = new Deck();
     // Testing printDeck method
-    System.out.println("Testing printDeck():");
-    deck.printDeck();
-    System.out.println();
+    // System.out.println("Testing printDeck():");
+    // deck.printDeck();
+    // System.out.println();
     // Testing toString method
-    System.out.println("Testing toString():");
-    System.out.println("\n" + deck.toString());
-    System.out.println();
+    // System.out.println("Testing toString():");
+    // System.out.println(deck.toString());
+    // System.out.println();
     // Testing shuffle method
-    System.out.println("Testing shuffle();");
+    // System.out.println("Testing shuffle();");
     deck.shuffle();
-    deck.printDeck();
-    System.out.println();
+    // deck.printDeck();
+    // System.out.println();
     // Testing subdeck method
-    System.out.println("Testing subdeck(int low, int high):");
+    // System.out.println("Testing subdeck(int low, int high):");
     Deck subdeck1 = deck.subdeck(0, 25);
     Deck subdeck2 = deck.subdeck(26, 51);
-    System.out.println("Subdeck 1:");
-    subdeck1.printDeck();
-    System.out.println("\nSubdeck 2:");
-    subdeck2.printDeck();
-    System.out.println();
+    // System.out.println("Subdeck 1:");
+    // subdeck1.printDeck();
+    // System.out.println("\nSubdeck 2:");
+    // subdeck2.printDeck();
+    // System.out.println();
     // Testing merge method
-    System.out.println("Testing merge(Deck d1, Deck d2):");
+    // System.out.println("Testing merge(Deck d1, Deck d2):");
     Deck mergedDeck = merge(subdeck1, subdeck2);
-    mergedDeck.printDeck();
-    System.out.println();
+    // mergedDeck.printDeck();
+    // System.out.println();
     // Testing selectionSort method
     System.out.println("Testing selectionSort():");
     mergedDeck.selectionSort();

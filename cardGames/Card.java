@@ -39,94 +39,6 @@ public class Card {
   // Can we see the Card's value, or only the back cover
   private boolean faceUp;
 
-  /* ----- Main Program ----- */
-  public static void main(String[] args) {
-
-    Card threeOfClubs = new Card(2, 0);
-    System.out.println(threeOfClubs);
-    Card jackOfDiamonds = new Card(10, 1);
-    System.out.println(jackOfDiamonds);
-
-    // Let's create an empty array of 52 Cards, kind of like a deck of cards. Remember, it actually
-    // contains REFERENCES to Cards, since variables that are objects (here, Cards) are references
-    // to their object, and are not the object itself
-    Card[] cards = new Card[52];
-    if (cards[0] == null) {
-      System.out.println("No card yet!");
-    }
-
-    cards = generateCards();
-    printCardArray(cards);
-    // This also works, but not as pretty
-    System.out.println(Arrays.toString(cards));
-
-    // Testing out algorithms
-    System.out.println();
-    System.out.println(
-        "Sequential search for Ace of Spades: " + sequentialSearch(cards, new Card(13, 3)));
-    System.out.println("Binary search for Ace of Spades: " + binarySearch(cards, new Card(13, 3)));
-
-    System.out.println();
-    System.out.println(
-        "Sequential search for King of Spades: " + sequentialSearch(cards, new Card(12, 3)));
-    System.out.println("Binary search for King of Spades: " + binarySearch(cards, new Card(12, 3)));
-
-    System.out.println();
-    System.out.println(
-        "Sequential search for Ace of Clubs: " + sequentialSearch(cards, new Card(13, 0)));
-    System.out.println("Binary search for Ace of Clubs: " + binarySearch(cards, new Card(13, 0)));
-
-    System.out.println();
-    Card aceOfClubs = new Card(13, 0);
-    Card[] cardsMissingAceOfClubs = generateCardsMissing(aceOfClubs);
-    System.out.println(
-        "Sequential search for Ace of Clubs when absent: "
-            + sequentialSearch(cardsMissingAceOfClubs, aceOfClubs));
-    System.out.println(
-        "Binary search for Ace of Clubs when absent: "
-            + binarySearch(cardsMissingAceOfClubs, aceOfClubs));
-
-    // Testing for Card suit frequency histogram, flush and royal flush
-    System.out.println();
-    System.out.println(
-        "Suit histogram with full array of Cards: " + Arrays.toString(suitHist(cards)));
-    System.out.println(
-        "Suit histogram with incomplete array of Cards (missing Ace of Clubs): "
-            + Arrays.toString(suitHist(cardsMissingAceOfClubs)));
-    Card kingOfClubs = new Card(12, 0);
-    Card queenOfClubs = new Card(11, 0);
-    Card jackOfClubs = new Card(10, 0);
-    Card tenOfClubs = new Card(9, 0);
-    Card[] royalFlush = {tenOfClubs, jackOfClubs, queenOfClubs, kingOfClubs, aceOfClubs};
-    Card twoOfClubs = new Card(1, 0);
-    Card fourOfClubs = new Card(3, 0);
-    Card fiveOfClubs = new Card(4, 0);
-    Card[] standardFlush = {aceOfClubs, twoOfClubs, threeOfClubs, fourOfClubs, fiveOfClubs};
-    // Notice the imposter jackOfDiamonds
-    Card[] incompleteFlush = {tenOfClubs, jackOfDiamonds, queenOfClubs, kingOfClubs, aceOfClubs};
-    System.out.println(
-        "\nCheck if a valid hand contains a standard flush: " + hasFlush(standardFlush));
-    System.out.println(
-        "Check if an invalid hand contains a standard flush: " + hasFlush(incompleteFlush));
-
-    System.out.println(
-        "\nCheck complete histogram for complete array of Cards: "
-            + Arrays.toString(cardHist(cards)));
-    System.out.println(
-        "\nCheck complete histogram for an incomplete array of Cards: "
-            + Arrays.toString(cardHist(cardsMissingAceOfClubs)));
-    System.out.println("\nCheck for royal flush in valid hand: " + hasRoyal(royalFlush));
-    System.out.println("\nCheck for royal flush in invalid hand: " + hasRoyal(incompleteFlush));
-    System.out.println(
-        "\nCheck for royal flush in standard flush hand: " + hasRoyal(standardFlush));
-
-    // Test Fisher-Yates shuffle
-    System.out.println("\nTesting Fisher-Yates shuffle on array of Cards:");
-    Card[] cardsToShuffle = generateCards();
-    shuffleCards(cardsToShuffle);
-    printCardArray(cardsToShuffle);
-  } // end of Main Program
-
   /**
    * Value constructor; the default constructor is not very useful here; refer to the class
    * constants RANKS and SUITS for the values assigned to each real-life component of a playing
@@ -539,4 +451,92 @@ public class Card {
       lengthToShuffle--;
     }
   }
+
+  /* ----- Main Program ----- */
+  public static void main(String[] args) {
+
+    Card threeOfClubs = new Card(2, 0);
+    System.out.println(threeOfClubs);
+    Card jackOfDiamonds = new Card(10, 1);
+    System.out.println(jackOfDiamonds);
+
+    // Let's create an empty array of 52 Cards, kind of like a deck of cards. Remember, it actually
+    // contains REFERENCES to Cards, since variables that are objects (here, Cards) are references
+    // to their object, and are not the object itself
+    Card[] cards = new Card[52];
+    if (cards[0] == null) {
+      System.out.println("No card yet!");
+    }
+
+    cards = generateCards();
+    printCardArray(cards);
+    // This also works, but not as pretty
+    System.out.println(Arrays.toString(cards));
+
+    // Testing out algorithms
+    System.out.println();
+    System.out.println(
+        "Sequential search for Ace of Spades: " + sequentialSearch(cards, new Card(13, 3)));
+    System.out.println("Binary search for Ace of Spades: " + binarySearch(cards, new Card(13, 3)));
+
+    System.out.println();
+    System.out.println(
+        "Sequential search for King of Spades: " + sequentialSearch(cards, new Card(12, 3)));
+    System.out.println("Binary search for King of Spades: " + binarySearch(cards, new Card(12, 3)));
+
+    System.out.println();
+    System.out.println(
+        "Sequential search for Ace of Clubs: " + sequentialSearch(cards, new Card(13, 0)));
+    System.out.println("Binary search for Ace of Clubs: " + binarySearch(cards, new Card(13, 0)));
+
+    System.out.println();
+    Card aceOfClubs = new Card(13, 0);
+    Card[] cardsMissingAceOfClubs = generateCardsMissing(aceOfClubs);
+    System.out.println(
+        "Sequential search for Ace of Clubs when absent: "
+            + sequentialSearch(cardsMissingAceOfClubs, aceOfClubs));
+    System.out.println(
+        "Binary search for Ace of Clubs when absent: "
+            + binarySearch(cardsMissingAceOfClubs, aceOfClubs));
+
+    // Testing for Card suit frequency histogram, flush and royal flush
+    System.out.println();
+    System.out.println(
+        "Suit histogram with full array of Cards: " + Arrays.toString(suitHist(cards)));
+    System.out.println(
+        "Suit histogram with incomplete array of Cards (missing Ace of Clubs): "
+            + Arrays.toString(suitHist(cardsMissingAceOfClubs)));
+    Card kingOfClubs = new Card(12, 0);
+    Card queenOfClubs = new Card(11, 0);
+    Card jackOfClubs = new Card(10, 0);
+    Card tenOfClubs = new Card(9, 0);
+    Card[] royalFlush = {tenOfClubs, jackOfClubs, queenOfClubs, kingOfClubs, aceOfClubs};
+    Card twoOfClubs = new Card(1, 0);
+    Card fourOfClubs = new Card(3, 0);
+    Card fiveOfClubs = new Card(4, 0);
+    Card[] standardFlush = {aceOfClubs, twoOfClubs, threeOfClubs, fourOfClubs, fiveOfClubs};
+    // Notice the imposter jackOfDiamonds
+    Card[] incompleteFlush = {tenOfClubs, jackOfDiamonds, queenOfClubs, kingOfClubs, aceOfClubs};
+    System.out.println(
+        "\nCheck if a valid hand contains a standard flush: " + hasFlush(standardFlush));
+    System.out.println(
+        "Check if an invalid hand contains a standard flush: " + hasFlush(incompleteFlush));
+
+    System.out.println(
+        "\nCheck complete histogram for complete array of Cards: "
+            + Arrays.toString(cardHist(cards)));
+    System.out.println(
+        "\nCheck complete histogram for an incomplete array of Cards: "
+            + Arrays.toString(cardHist(cardsMissingAceOfClubs)));
+    System.out.println("\nCheck for royal flush in valid hand: " + hasRoyal(royalFlush));
+    System.out.println("\nCheck for royal flush in invalid hand: " + hasRoyal(incompleteFlush));
+    System.out.println(
+        "\nCheck for royal flush in standard flush hand: " + hasRoyal(standardFlush));
+
+    // Test Fisher-Yates shuffle
+    System.out.println("\nTesting Fisher-Yates shuffle on array of Cards:");
+    Card[] cardsToShuffle = generateCards();
+    shuffleCards(cardsToShuffle);
+    printCardArray(cardsToShuffle);
+  } // end of Main Program
 }
