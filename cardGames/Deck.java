@@ -256,6 +256,13 @@ public class Deck {
     return resultDeck;
   }
 
+  /**
+   * Sort cards by a divide and conquer strategy, breaking a deck into smaller and smaller decks
+   * until it reaches decks of one card only; then incrementally merge all of the smaller decks in
+   * sorted fashion, so that the final merged deck is automatically sorted.
+   *
+   * @return the sorted deck
+   */
   public Deck mergeSort() {
 
     // If the deck has 0 or 1 cards, it is already sorted so return it

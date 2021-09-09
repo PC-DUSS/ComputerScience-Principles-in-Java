@@ -55,7 +55,6 @@ public class War {
         // loses.
         Pile pot = new Pile();
         boolean itsATie = true;
-        boolean gameHasEnded = false;
         while (itsATie) {
 
           // Add the two tied cards to the pot
@@ -71,13 +70,13 @@ public class War {
             // If a player has no more cards, the game ends
             if (p1.isEmpty() || p2.isEmpty()) {
 
-              gameHasEnded = true;
+              itsATie = false;
               break;
             }
           }
 
           // First, check that the game has not ended (that a player has no more cards)
-          if (gameHasEnded) {
+          if (!itsATie) {
 
             break;
           } // If each player has cards remaining, continue on
