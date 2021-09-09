@@ -1,3 +1,5 @@
+import java.util.Random;
+
 /**
  * Implementation of a classic card game.
  *
@@ -6,6 +8,9 @@
  * @version 1.0
  */
 public class War {
+
+  // Class-wide Random object
+  private static Random random = new Random();
 
   public static void main(String[] args) {
 
@@ -33,16 +38,34 @@ public class War {
       // If player 1 wins this round
       if (diff > 0) {
 
-        // Add both cards to player 1's pile
-        p1.addCard(c1);
-        p1.addCard(c2);
+        // Add both cards to player 1's pile in random order
+        int randomNum = random.nextInt(2);
+        if (randomNum == 0) {
+
+          p1.addCard(c1);
+          p1.addCard(c2);
+
+        } else {
+
+          p1.addCard(c2);
+          p1.addCard(c1);
+        }
 
         // If player 2 wins this round
       } else if (diff < 0) {
 
-        // Add both cards to player 2's pile
-        p2.addCard(c1);
-        p2.addCard(c2);
+        // Add both cards to player 2's pile in random order
+        int randomNum = random.nextInt(2);
+        if (randomNum == 0) {
+
+          p2.addCard(c1);
+          p2.addCard(c2);
+
+        } else {
+
+          p2.addCard(c2);
+          p2.addCard(c1);
+        }
 
         // If it's a tie
       } else {
@@ -57,17 +80,44 @@ public class War {
         boolean itsATie = true;
         while (itsATie) {
 
-          // Add the two tied cards to the pot
-          pot.addCard(c1);
-          pot.addCard(c2);
+          // Check that both players still have cards
+          if (p1.isEmpty() || p2.isEmpty()) {
 
-          // Add another 3 cards from each player's deck to the pot
+            itsATie = false;
+            System.out.println("A player has run out of cards. Exiting Tie Loop");
+            break;
+          } // If each player has cards remaining, continue on
+
+          // Add the two tied cards to the pot in random order
+          int randomNum = random.nextInt(2);
+          if (randomNum == 0) {
+
+            pot.addCard(c1);
+            pot.addCard(c2);
+
+          } else {
+
+            pot.addCard(c2);
+            pot.addCard(c1);
+          }
+
+          // Add another 3 cards from each player's deck to the pot in random order
           for (int i = 0; i < 3; i++) {
 
-            pot.addCard(p1.popCard());
-            pot.addCard(p2.popCard());
+            randomNum = random.nextInt(2);
+            if (randomNum == 0) {
 
-            // If a player has no more cards, the game ends
+              pot.addCard(p1.popCard());
+              pot.addCard(p2.popCard());
+
+            } else {
+
+              pot.addCard(p2.popCard());
+              pot.addCard(p1.popCard());
+            }
+
+            // After each card that you pop, check if a player has no more cards. Then the game
+            // ends.
             if (p1.isEmpty() || p2.isEmpty()) {
 
               itsATie = false;
@@ -75,11 +125,12 @@ public class War {
             }
           }
 
-          // First, check that the game has not ended (that a player has no more cards)
+          // If game has ended, break out of loop
           if (!itsATie) {
 
+            System.out.println("A player has run out of cards. Exiting Tie Loop");
             break;
-          } // If each player has cards remaining, continue on
+          }
 
           // Make each player battle their top card
           c1 = p1.popCard();
@@ -89,27 +140,53 @@ public class War {
           // If player 1 wins
           if (diff > 0) {
 
-            // Player 1 takes all
-            pot.addCard(c1);
-            pot.addCard(c2);
-            p1.addPile(pot);
-            // Tie is broken
+            // Player 1 takes all, in random order
+            randomNum = random.nextInt(2);
+            if (randomNum == 0) {
+
+              pot.addCard(c1);
+              pot.addCard(c2);
+              p1.addPile(pot);
+
+            } else {
+
+              pot.addCard(c2);
+              pot.addCard(c1);
+              p1.addPile(pot);
+            }
+
+            // And the tie is broken
             itsATie = false;
 
             // If player 2 wins
           } else if (diff < 0) {
 
-            // Player 2 takes all
-            pot.addCard(c1);
-            pot.addCard(c2);
-            p2.addPile(pot);
-            // Tie is broken
+            // Player 2 takes all, in random order
+            randomNum = random.nextInt(2);
+            if (randomNum == 0) {
+
+              pot.addCard(c1);
+              pot.addCard(c2);
+              p2.addPile(pot);
+
+            } else {
+
+              pot.addCard(c2);
+              pot.addCard(c1);
+              p2.addPile(pot);
+            }
+
+            // And the tie is broken
             itsATie = false;
           }
           // If it's another tie, continue the process until there is tie-break, or until a player
           // has no more cards. In that case he loses automatically.
+        System.out.println(String.format("End of Tie Loop\n\tP1: %d\n\tP2: %d",
+                                         p1.getCards().size(), p2.getCards().size()));
         } // end of tie loop
       } // end of tie condition
+      System.out.println(String.format("End of Game Loop\n\tP1: %d\n\tP2: %d",
+                                       p1.getCards().size(), p2.getCards().size()));
     } // end of game loop
 
     // Display win message depending on which pile of cards is empty
