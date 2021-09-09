@@ -42,6 +42,18 @@ public class Deck {
     }
   }
 
+  /**
+   * Create a copy of a deck.
+   *
+   * @param another instance of a deck object
+   * @return the copied in a separate instance
+   */
+  public Deck(Deck another) {
+
+    this.cards = another.cards;
+    this.length = another.length;
+  }
+
   /* ----- Getter(s) ----- */
   public Card[] getCards() {
 
@@ -233,9 +245,11 @@ public class Deck {
     // Divide the deck into 2 subdecks
     Deck subdeck1 = this.subdeck(0, 25);
     Deck subdeck2 = this.subdeck(26, 51);
+
     // Sort the subdecks using selectionSort
     subdeck1.selectionSort();
     subdeck2.selectionSort();
+
     // Merge the 2 subdecks into a new deck and return the result deck
     Deck resultDeck = merge(subdeck1, subdeck2);
 
@@ -245,13 +259,24 @@ public class Deck {
   public Deck mergeSort() {
 
     // If the deck has 0 or 1 cards, it is already sorted so return it
-    // Otherwise, divide the deck into two subdecks
-    // Sort the subdecks using mergeSort
-    // Merge the decks
-    // Return the result deck
+    if (this.length == 0 || this.length == 1) {
 
-    // Stub
-    return new Deck();
+      return this;
+    }
+
+    // Otherwise, divide the deck into two subdecks
+    int subdeckHalf = (this.length - 1) / 2;
+    Deck subdeck1 = this.subdeck(0, subdeckHalf);
+    Deck subdeck2 = this.subdeck(subdeckHalf + 1, this.length - 1);
+
+    // Sort the subdecks using mergeSort
+    Deck sorted1 = subdeck1.mergeSort();
+    Deck sorted2 = subdeck2.mergeSort();
+
+    // Merge the decks
+    Deck merged = merge(sorted1, sorted2);
+
+    return merged;
   }
 
   /**
@@ -271,41 +296,112 @@ public class Deck {
     return text.toString();
   }
 
+  /**
+   * Sort a deck of cards using insertion sort algorithm.
+   *
+   * @return the resulting sorted deck
+   */
+  public void insertionSort() {
+
+    // Go through all cards starting from the second (the first one is considered sorted)
+    for (int i = 1; i < this.length; i++) {
+
+      Card currentCard = this.cards[i];
+      // Insert the currently evaluated card in the correct spot inside the sorted deck
+      this.insert(currentCard, i);
+    }
+  }
+
+  /**
+   * Insert a card that is being evaluated in its correct position inside a deck, so that the deck
+   * remains sorted in increasing order.
+   *
+   * @param deckToSort Deck reference deck to use to create the sorted deck
+   * @param card Card object that is to be inserted in the correct position
+   * @param index int the index of the card currently being inserted into the sorted deck
+   */
+  public void insert(Card card, int i) {
+
+    while (true) {
+
+      // If the card has reached the very beginning of the deck
+      if (i == 0) {
+
+        // Then the card is in its correct position, exit the loop
+        break;
+
+        // Else if the evaluated card is bigger or equal to the previous card
+      } else if (card.compareTo(this.cards[i - 1]) > 0 || card.compareTo(this.cards[i - 1]) == 0) {
+
+        // Then the card is in its correct position, exit the loop
+        break;
+
+        // Otherwise (meaning it is smaller than the previous card)
+      } else {
+
+        // Swap the card with the previous one
+        this.swapCards(i, i - 1);
+        // Decrement the index variable to make sure we are keeping track of the card, since it
+        // moved back one position
+        i--;
+      }
+    }
+  }
+
   /* ----- Main Program ----- */
   public static void main(String[] args) {
 
     Deck deck = new Deck();
     // Testing printDeck method
-    // System.out.println("Testing printDeck():");
-    // deck.printDeck();
-    // System.out.println();
+    System.out.println("Testing printDeck():");
+    deck.printDeck();
+    System.out.println();
     // Testing toString method
-    // System.out.println("Testing toString():");
-    // System.out.println(deck.toString());
-    // System.out.println();
+    System.out.println("Testing toString():");
+    System.out.println(deck.toString());
+    System.out.println();
     // Testing shuffle method
-    // System.out.println("Testing shuffle();");
+    System.out.println("Testing shuffle();");
     deck.shuffle();
-    // deck.printDeck();
-    // System.out.println();
+    deck.printDeck();
+    System.out.println();
     // Testing subdeck method
-    // System.out.println("Testing subdeck(int low, int high):");
+    System.out.println("Testing subdeck(int low, int high):");
     Deck subdeck1 = deck.subdeck(0, 25);
     Deck subdeck2 = deck.subdeck(26, 51);
-    // System.out.println("Subdeck 1:");
-    // subdeck1.printDeck();
-    // System.out.println("\nSubdeck 2:");
-    // subdeck2.printDeck();
-    // System.out.println();
+    System.out.println("Subdeck 1:");
+    subdeck1.printDeck();
+    System.out.println("\nSubdeck 2:");
+    subdeck2.printDeck();
+    System.out.println();
     // Testing merge method
-    // System.out.println("Testing merge(Deck d1, Deck d2):");
+    System.out.println("Testing merge(Deck d1, Deck d2):");
     Deck mergedDeck = merge(subdeck1, subdeck2);
-    // mergedDeck.printDeck();
-    // System.out.println();
+    mergedDeck.printDeck();
+    System.out.println();
     // Testing selectionSort method
     System.out.println("Testing selectionSort():");
     mergedDeck.selectionSort();
     mergedDeck.printDeck();
+    mergedDeck.shuffle();
+    System.out.println();
+    // Testing almostMergeSort method
+    System.out.println("Testing almostMergeSort():");
+    mergedDeck = mergedDeck.almostMergeSort();
+    mergedDeck.printDeck();
+    mergedDeck.shuffle();
+    System.out.println();
+    // Testing mergeSort method
+    System.out.println("Testing mergeSort():");
+    mergedDeck = mergedDeck.mergeSort();
+    mergedDeck.printDeck();
+    mergedDeck.shuffle();
+    System.out.println();
+    // Testing insertionSort method
+    System.out.println("Testing insertionSort():");
+    mergedDeck.insertionSort();
+    mergedDeck.printDeck();
+    mergedDeck.shuffle();
     System.out.println();
   } // end of main program
 }
