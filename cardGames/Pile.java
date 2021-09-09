@@ -20,6 +20,12 @@ public class Pile {
     this.cards = new ArrayList<Card>();
   }
 
+  /* ----- Getter(s) ----- */
+  public ArrayList<Card> getCards() {
+
+    return this.cards;
+  }
+
   /**
    * Return the top card from a pile and remove it from the pile (wrapper method).
    *
@@ -64,7 +70,20 @@ public class Pile {
     // since cards are immutable
     for (Card card : deck.getCards()) {
 
-      this.cards.add(card);
+      this.addCard(card);
+    }
+  }
+
+  /**
+   * Add cards from another pile to this pile.
+   *
+   * @param otherPile Pile from which to take the cards to add to this pile
+   */
+  public void addPile(Pile otherPile) {
+
+    for (Card card : otherPile.getCards()) {
+
+      this.addCard(card);
     }
   }
 }
