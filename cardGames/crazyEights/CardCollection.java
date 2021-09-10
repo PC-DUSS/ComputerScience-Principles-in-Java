@@ -9,7 +9,6 @@ import java.util.Random;
  * @version 1.0
  */
 public class CardCollection {
-
   private String label;
   private ArrayList<Card> cards;
   public static Random random = new Random();
@@ -20,7 +19,6 @@ public class CardCollection {
    * @param label single-word to describe what kind of CardCollection that this is to become
    */
   public CardCollection(String label) {
-
     this.label = label;
     this.cards = new ArrayList<Card>();
   }
@@ -31,7 +29,6 @@ public class CardCollection {
    * @param card the card to append to this CardCollection
    */
   public void addCard(Card card) {
-
     // Previously, we had been using 'this' keyword in front of instance attributes all the time to
     // make them explicit. It's use is optional WHEN INSIDE INSTANCE METHODS. So now we will stop
     // doing it.
@@ -46,7 +43,6 @@ public class CardCollection {
    * @return the popped card
    */
   public Card popCard(int i) {
-
     return cards.remove(i);
   }
 
@@ -56,9 +52,8 @@ public class CardCollection {
    * @return the popped card
    */
   public Card popCard() {
-
     // Do you see what we're doing here? Clever huh.
-    return popCard(cards.size() - 1);
+    return popCard(size() - 1);
   }
 
   /**
@@ -67,7 +62,6 @@ public class CardCollection {
    * @return true or false depending on if the CardCollection is empty or not
    */
   public boolean isEmpty() {
-
     return cards.isEmpty();
   }
 
@@ -77,16 +71,36 @@ public class CardCollection {
    * @return an int representing the number of cards present in the CardCollection
    */
   public int size() {
-
     return cards.size();
   }
 
-  /* ----- Getters ----- */
+  /**
+   * Get a card from this CardCollection at a given index position.
+   *
+   * @param i index position from which to get the card
+   */
   public Card getCard(int i) {
-
     // With ArrayList, you can't use the [] accessor. You have to use the get() and set() methods
     // from ArrayList API.
     return cards.get(i);
+  }
+
+  /**
+   * Return the ArrayList containing all the cards inside this CardCollection.
+   *
+   * @return the ArrayList object containing all the card objects
+   */
+  public ArrayList<Card> getCards() {
+    return cards;
+  }
+
+  /**
+   * Get the label attribute for an instance of CardCollection.
+   *
+   * @return the String value for the label attribute
+   */
+  public String getLabel() {
+    return label;
   }
 
   /**
@@ -96,7 +110,6 @@ public class CardCollection {
    * @param card the new card to be held in the given index position for this CardCollection
    */
   public void setCard(int index, Card card) {
-
     cards.set(index, card);
   }
 
@@ -106,7 +119,6 @@ public class CardCollection {
    * @return the last card from this CardCollection
    */
   public Card lastCard() {
-
     return cards.get(cards.size() - 1);
   }
 
@@ -117,7 +129,6 @@ public class CardCollection {
    * @param j index position of the second card to swap
    */
   public void swapCards(int i, int j) {
-
     Card tmp = cards.get(i);
     cards.set(i, cards.get(j));
     cards.set(j, tmp);
@@ -125,9 +136,7 @@ public class CardCollection {
 
   /** Shuffle the cards inside a CardCollection. */
   public void shuffle() {
-
     for (int i = cards.size() - 1; i > 0; i--) {
-
       int randomNum = random.nextInt(i + 1);
       swapCards(i, randomNum);
     }
@@ -139,10 +148,8 @@ public class CardCollection {
    * @return the String representing all the cards
    */
   public String toString() {
-
     StringBuilder text = new StringBuilder();
     for (Card card : cards) {
-
       text.append(card.toString());
       text.append("\n");
     }
@@ -152,10 +159,31 @@ public class CardCollection {
 
   /** Print to std_out all the cards inside this CardCollection. */
   public void printCardCollection() {
-
     for (Card card : cards) {
-
       System.out.println(card.toString());
     }
   }
-} // End of CardCollection class
+
+  /**
+   * Deal cards from this CardCollection instance to another.
+   *
+   * @param other the CardCollection to whom we are giving the cards
+   * @param n number of cards to give to the other CardCollection from this one
+   */
+  public void deal(CardCollection other, int n) {
+    for (int i = 0; i < n; i++) {
+      Card currentCard = popCard();
+      other.addCard(currentCard);
+    }
+  }
+
+  /**
+   * Deal all the remaining cards from this CardCollection to another.
+   *
+   * @param other the CardCollection to whom to give all the cards
+   */
+  public void dealAll(CardCollection other) {
+    int nTotal = size();
+    deal(other, nTotal);
+  }
+}

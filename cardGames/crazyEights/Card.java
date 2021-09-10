@@ -10,7 +10,6 @@ import java.util.Arrays;
  * @version 1.0
  */
 public class Card {
-
   /*
     Card ranks encoding:
     - Jack => 10
@@ -35,7 +34,6 @@ public class Card {
   };
   // Suits start at index position 0
   public static final String[] SUITS = {"Clubs", "Diamonds", "Hearts", "Spades"};
-
   // Can we see the Card's value, or only the back cover
   private boolean faceUp;
 
@@ -48,7 +46,6 @@ public class Card {
    * @param suit int the suit of the Card
    */
   public Card(int rank, int suit) throws IllegalArgumentException {
-
     // Check if the given values for rank and suit are valid
     if (rank < 1 || rank > 13) {
       throw new IllegalArgumentException("Card rank must be from 1 to 13.");
@@ -66,28 +63,23 @@ public class Card {
 
   /* ----- Getters  ----- */
   public int getRank() {
-
     return this.rank;
   }
 
   public int getSuit() {
-
     return this.suit;
   }
 
   public boolean getCardFace() {
-
     return this.faceUp;
   }
 
   /* ----- Setters ----- */
   public void setFaceUp() {
-
     this.faceUp = true;
   }
 
   public void setFaceDown() {
-
     this.faceUp = false;
   }
 
@@ -97,7 +89,6 @@ public class Card {
    * @return String that is formatted to neatly represent the caller instance Card
    */
   public String toString() {
-
     return String.format("%s of %s", RANKS[this.rank], SUITS[this.suit]);
   }
 
@@ -108,7 +99,6 @@ public class Card {
    * @return true or false, depending on if they are equivalent or not
    */
   public boolean equals(Card other) {
-
     return this.rank == other.rank && this.suit == other.suit;
   }
 
@@ -120,21 +110,13 @@ public class Card {
    * @return -1 if this < other, 1 if this > other, and 0 if this == other
    */
   public int compareTo(Card other) {
-
     if (this.suit > other.suit) {
-
       return 1;
-
     } else if (this.suit < other.suit) {
-
       return -1;
-
     } else if (this.rank > other.rank) {
-
       return 1;
-
     } else if (this.rank < other.rank) {
-
       return -1;
     }
 
@@ -148,17 +130,13 @@ public class Card {
    * @return Card[] an ordered array of Cards
    */
   public static Card[] generateCards() {
-
     Card[] cards = new Card[52];
     int index = 0;
-
     // For each possible suit family
     for (int lSuit = 0; lSuit < SUITS.length; lSuit++) {
-
       // And for each possible rank. Remember, ranks use 1-based indexing, not 0-based indexing, and
       // has a length of 1-more than the actual number of significant values
       for (int lRank = 1; lRank < RANKS.length; lRank++) {
-
         // Create a Card holding each of those values and add it to the array of Cards
         cards[index] = new Card(lRank, lSuit);
         index++;
@@ -175,16 +153,12 @@ public class Card {
    * @return Card[] Card array that is missing a specified Card from its contents
    */
   public static Card[] generateCardsMissing(Card missingCard) {
-
     Card[] incompleteCards = new Card[51];
     int index = 0;
-
     for (int lSuit = 0; lSuit < SUITS.length; lSuit++) {
       for (int lRank = 1; lRank < RANKS.length; lRank++) {
-
         Card lCard = new Card(lRank, lSuit);
         if (!(lCard.equals(missingCard))) {
-
           incompleteCards[index] = lCard;
           index++;
         }
@@ -200,9 +174,7 @@ public class Card {
    * @param cards Card[] array of Cards
    */
   public static void printCardArray(Card[] cards) {
-
     for (Card card : cards) {
-
       System.out.println(card);
     }
   }
@@ -219,13 +191,10 @@ public class Card {
    * @return the index position of the target if it is found, or return -1 if it isn't found
    */
   public static int sequentialSearch(Card[] cards, Card target) {
-
     // Search all Cards in the Card array
     for (int i = 0; i < cards.length; i++) {
-
       // If the currently searched card is equivalent to the target
       if (cards[i].equals(target)) {
-
         // Return the index position of the currently search card
         return i;
       }
@@ -246,7 +215,6 @@ public class Card {
    * @return the index position of the target if it is found, or return -1 if it isn't found
    */
   public static int binarySearch(Card[] cards, Card target) {
-
     /* Go to middle.
     If the card found is lesser than the target, go higher.
     If the card found is greater than the target, go lower.
@@ -263,38 +231,28 @@ public class Card {
     - When the Card at the current index is greater than the target, update the lower bound,
       excluding the current Card in the next iteration
      */
-
     int high = cards.length - 1;
     int low = 0;
     int index;
-
     // While there is an existing domain in which we can conduct a search
     while (low <= high) {
-
       // Print the current domain of search
       System.out.println("[" + low + ", " + high + "]");
-
       // Find the middle of the domain and save its index
       index = (low + high) / 2;
       // Compare the card at that index position with the target
       int comparison = cards[index].compareTo(target);
-
       // If it is equivalent to the target
       if (comparison == 0) {
-
         // Return its index
         return index;
-
         // If it is lesser than the target
       } else if (comparison == -1) {
-
         // The new domain becomes restricted to the upper half of the previous domain, EXCLUDING the
         // index of the just found middle point
         low = index + 1;
-
         // If it is greater than the target
       } else {
-
         // The new domain becomes restricted to the lower half of the previous domain, EXCLUDING the
         // index of the just found middle point
         high = index - 1;
@@ -314,13 +272,10 @@ public class Card {
    *     Diamonds, [2] is Hearts and [3] is Spades
    */
   public static int[] suitHist(Card[] cards) {
-
     // Array to represent Card suits (0: Clubs, 1: Diamonds, 2: Hearts, 3: Spades)
     int[] hist = new int[4];
-
     // For each Card in the array of Cards
     for (int i = 0; i < cards.length; i++) {
-
       // Get its suit
       int currentSuit = cards[i].suit;
       // Increment the histogram amount for this suit
@@ -337,16 +292,12 @@ public class Card {
    * @return true of false, depending on whether the hand contains a flush or not
    */
   public static boolean hasFlush(Card[] cards) {
-
     // Get a histogram for the suits of all the Cards present in the hand
     int[] hist = suitHist(cards);
-
     // For each suit
     for (int i = 0; i < hist.length; i++) {
-
       // If the number of Cards from that suit in the given hand equals or exceeds 5
       if (hist[i] >= 5) {
-
         // Then the hand contains a flush
         return true;
       }
@@ -364,13 +315,10 @@ public class Card {
    *     exlcluding Wildcards
    */
   public static int[] cardHist(Card[] cards) {
-
     // Histogram for all possible standard Cards
     int hist[] = new int[52];
-
     // For each Card inside the hand
     for (int i = 0; i < cards.length; i++) {
-
       // Determine the index of the current Card in the histogram
       int cardIndex = (cards[i].suit * 13) + cards[i].rank - 1;
       hist[cardIndex]++;
@@ -387,36 +335,26 @@ public class Card {
    * @return true of false, depending on if the hand contains a royal flush or not
    */
   public static boolean hasRoyal(Card[] cards) {
-
     // Get frequencies for all cards in the examined hand
     int[] hist = cardHist(cards);
-
     // Test print the Card histogram to see whats up
     System.out.println(Arrays.toString(hist));
-
     // If any type of royal flush is present:
     // Clubs royal flush
     if (hist[8] >= 1 && hist[9] >= 1 && hist[10] >= 1 && hist[11] >= 1 && hist[12] >= 1) {
-
       return true;
-
       // Diamonds royal flush
     } else if (hist[21] >= 1 && hist[22] >= 1 && hist[23] >= 1 && hist[24] >= 1 && hist[25] >= 1) {
-
       return true;
-
       // Hearts royal flush
     } else if (hist[34] >= 1 && hist[35] >= 1 && hist[36] >= 1 && hist[37] >= 1 && hist[38] >= 1) {
-
       return true;
-
       // Spades royal flush
     } else if (hist[47] >= 1 && hist[48] >= 1 && hist[49] >= 1 && hist[50] >= 1 && hist[51] >= 1) {
-
       return true;
     }
 
-    // If no royal flush condition has triggered a return statement, then return false
+    // If no royal flush condition was triggered, return false
     return false;
   }
 
@@ -426,7 +364,6 @@ public class Card {
    * @param cards Card[] array of Cards
    */
   public static void shuffleCards(Card[] cards) {
-
     // The shuffle starts from the back and moves towards the front. lengthToShuffle also represents
     // the current Card being shuffled
     int lengthToShuffle = cards.length;
@@ -434,10 +371,8 @@ public class Card {
     Card tmp;
     // Card to swap with the shuffled Card
     int randomSwap;
-
     // While there remains cards that need to be shuffled
     while (lengthToShuffle > 0) {
-
       // Pick a random index for the card to shuffle from [0 - (lengthToShuffle - 1)]
       randomSwap = (int) Math.floor(Math.random() * (double) (lengthToShuffle - 1));
       // Hold the swap card in temporary variable
@@ -454,12 +389,10 @@ public class Card {
 
   /* ----- Main Program ----- */
   public static void main(String[] args) {
-
     Card threeOfClubs = new Card(2, 0);
     System.out.println(threeOfClubs);
     Card jackOfDiamonds = new Card(10, 1);
     System.out.println(jackOfDiamonds);
-
     // Let's create an empty array of 52 Cards, kind of like a deck of cards. Remember, it actually
     // contains REFERENCES to Cards, since variables that are objects (here, Cards) are references
     // to their object, and are not the object itself
