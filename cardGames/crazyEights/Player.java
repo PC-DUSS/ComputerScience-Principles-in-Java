@@ -6,6 +6,7 @@
  * @version 1.0
  */
 public class Player {
+
   private String name;
   private Hand hand;
 
@@ -16,7 +17,7 @@ public class Player {
    */
   public Player(String name) {
     this.name = name;
-    hand = new Hand(name);
+    this.hand = new Hand(name);
   }
 
   /**
@@ -28,7 +29,7 @@ public class Player {
    * @return the card played by the player for this turn
    */
   public Card play(Eights eights, Card previousCard) {
-    Card card = searchForMatch(previousCard);
+    Card card = searchForMatch(eights, previousCard);
     if (card == null) {
       card = drawForMatch(eights, previousCard);
     }
@@ -94,9 +95,62 @@ public class Player {
    * @return the number of penalty points the player has
    */
   public int score() {
-    // TODO
+    // Through all of this, remember that card ranks are off by -1
+    int total = 0;
+    for (Card card : hand.getCards()) {
+      int cardRank = card.getRank();
+      // If the card is an 8, add 20 to the total
+      if (cardRank == 7) {
+        total += 20;
+        // If the card is a 10 or below (excluding Aces), add its rank+1 to the total
+      } else if (cardRank < 10) {
+        total += card.getRank() + 1;
+        // If it's an Ace, add 1 to the total
+      } else if (cardRank == 13) {
+        total += 1;
+        // If it's a face card, add 10 to the total
+      } else {
+        total += 10;
+      }
+    }
 
-    // Stub
-    return 0;
+    return total;
+  }
+
+  /** Get the player's card hand. */
+  public Hand getHand() {
+    return hand;
+  }
+
+  /** Get the player's name. */
+  public String getName() {
+    return name;
+  }
+
+  /** Display the cards in a player's hand */
+  public void display() {
+    System.out.printf("%s:\n", name);
+    for (Card card : hand.getCards()) {
+      System.out.println(card);
+    }
+
+    System.out.println();
+  }
+
+  /**
+   * Display the penalty score for this player, based on the calculated penalty from the cards
+   * remaining in his hand.
+   */
+  public void displayScore() {
+    System.out.printf("Player %s penalty score: %d\n", getName(), score());
+  }
+
+  /**
+   * Deal this player a new hand (use at the start of the game).
+   *
+   * @param deck deck to use to deal the cards to the player's hand
+   */
+  public void dealHand(Deck deck) {
+    deck.deal(this.hand, 5);
   }
 }

@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 /**
  * Class to represent the state of the game in Crazy Eights.
  *
@@ -20,4 +22,110 @@ public class Eights {
    next turn. (displayState)
   */
 
+  private Player one;
+  private Player two;
+  private Hand drawPile;
+  private Hand discardPile;
+  private Scanner in;
+
+  /** Constructor: initialize instance variables and deal cards to players. */
+  public Eights() {
+    in = new Scanner(System.in);
+    Deck deck = new Deck("Deck");
+    one = new Player("Player 1");
+    two = new Player("Player 2");
+    drawPile = new Hand("Draw Pile");
+    discardPile = new Hand("Discard Pile");
+
+    deck.shuffle();
+    one.dealHand(deck);
+    two.dealHand(deck);
+    deck.deal(discardPile, 1);
+    deck.dealAll(drawPile);
+  }
+
+  /**
+   * Check whether the game is over: if any player's hand is empty, the game is done.
+   *
+   * @return true or false, depending on if the hand of any player is empty
+   */
+  public boolean isDone() {
+    return one.getHand().isEmpty() || two.getHand().isEmpty();
+  }
+
+  /** Reshuffle the discard pile and turn it into a draw pile, except for the card on top. */
+  public void reshuffle() {
+    Card topCard = discardPile.popCard();
+    discardPile.dealAll(drawPile);
+    discardPile.addCard(topCard);
+    drawPile.shuffle();
+  }
+
+  /**
+   * Draw a card and return it, reshuffling the discard pile into the draw pile if it ever becomes
+   * empty.
+   *
+   * @return the drawn card
+   */
+  public Card drawCard() {
+    if (drawPile.isEmpty()) {
+      reshuffle();
+    }
+
+    return drawPile.popCard();
+  }
+
+  /**
+   * Handle player turns.
+   *
+   * @param current player whose turn it currently is
+   * @return player whose turn it is about to be
+   */
+  public Player nextPlayer(Player current) {
+    if (current == one) {
+      return two;
+    }
+
+    return one;
+  }
+
+  /**
+   * Display each player's hand, the contents of the discard pile and the number of cards in the
+   * draw pile.
+   */
+  public void displayState() {
+    one.display();
+    two.display();
+    discardPile.display();
+    System.out.printf("Draw Pile:\n%d cards\n", drawPile.size());
+    in.nextLine();
+  }
+
+  /**
+   * A player takes his turn.
+   *
+   * @param player the player whose turn it is to play
+   */
+  public void takeTurn(Player player) {
+    // This gets the top card without removing it from the discard pile, as popCard() would
+    Card topCard = discardPile.lastCard();
+    Card nextCard = player.play(this, topCard); // 'this' is this instance of Eights
+    discardPile.addCard(nextCard);
+    System.out.printf("%s plays %s\n", player.getName(), nextCard);
+  }
+
+  /** Play the game Crazy Eights. */
+  public void playGame() {
+    // Player one starts
+    Player player = one;
+    // Keep playing until someone wins
+    while (!isDone()) {
+      displayState();
+      takeTurn(player);
+      player = nextPlayer(player);
+    }
+
+    one.displayScore();
+    two.displayScore();
+  }
 }

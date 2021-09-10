@@ -172,7 +172,7 @@ public class CardCollection {
    */
   public void deal(CardCollection other, int n) {
     for (int i = 0; i < n; i++) {
-      Card currentCard = popCard();
+      Card currentCard = this.popCard();
       other.addCard(currentCard);
     }
   }
