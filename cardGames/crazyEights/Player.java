@@ -31,7 +31,7 @@ public class Player {
   public Card play(Eights eights, Card previousCard) {
     Hand playableCards = getPlayableCards(eights, previousCard);
     if (playableCards.isEmpty()) {
-      Card card = drawForMatch(eights, previousCard);
+      Card card = drawForMatchSilently(eights, previousCard);
       return card;
     }
     
@@ -135,6 +135,26 @@ public class Player {
     while (true) {
       Card card = eights.drawCard();
       System.out.println(name + " draws " + card);
+      if (cardMatches(card, previousCard)) {
+        return card;
+      }
+
+      // Add the card to the player's hand if it could not be played
+      hand.addCard(card);
+    }
+  }
+  
+  /**
+   * Draw a card until it matches with the previously played card and can be played; without
+   * notification to std_out.
+   *
+   * @param eights variable to hold the state of the game
+   * @param previousCard the card on top of the discard pile
+   * @return the first drawn Card that can be played
+   */
+  private Card drawForMatchSilently(Eights eights, Card previousCard) {
+    while (true) {
+      Card card = eights.drawCard();
       if (cardMatches(card, previousCard)) {
         return card;
       }

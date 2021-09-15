@@ -113,9 +113,25 @@ public class Eights {
     discardPile.addCard(nextCard);
     System.out.printf("%s plays %s\n", player.getName(), nextCard);
   }
+  
+  /**
+   * A player takes his turn without notification to std_out.
+   *
+   * @param player the player whose turn it is to play
+   */
+  public void takeTurnSilently(Player player) {
+    // This gets the top card without removing it from the discard pile, as popCard() would
+    Card topCard = discardPile.lastCard();
+    Card nextCard = player.play(this, topCard); // 'this' is this instance of Eights
+    discardPile.addCard(nextCard);
+  }
 
-  /** Play the game Crazy Eights. */
-  public void playGame() {
+  /**
+  * Play the game Crazy Eights. 
+  * 
+  * @return which player won that game
+  */
+  public Player playGame() {
     // Player one starts
     Player player = one;
     // Keep playing until someone wins
@@ -127,5 +143,53 @@ public class Eights {
 
     one.displayScore();
     two.displayScore();
+    return whoWon();
+  }
+  
+  /**
+  * Play the game Crazy Eights without waiting for input on every turn, and without notification to
+  * std_out. 
+  * 
+  * @return which player won that game
+  */
+  public Player playGameFast() {
+    Player player = one;
+    while(!isDone()) {
+      takeTurnSilently(player);
+      player = nextPlayer(player);
+    }
+    
+    Player winner = whoWon();
+    System.out.printf("%s wins\n", winner.getName());
+    return winner;
+  }
+  
+  private Player whoWon() {
+    if (one.getHand().isEmpty()) {
+      return one;
+    } else if (two.getHand().isEmpty()) {
+      return two;
+    } else {
+      System.err.println("Error in whoWon()");
+      return null;
+    }
+  }
+  
+  /**
+  * Return the Player 1 object.
+  * 
+  * @return the Player 1 object
+  */
+  public Player getPlayerOne() {
+    return one;
+  }
+  
+  /**
+  * Return the Player 2 object.
+  * 
+  * @return the Player 2 object
+  */
+  public Player getPlayerTwo() {
+    return two;
   }
 }
