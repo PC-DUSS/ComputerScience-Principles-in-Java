@@ -26,15 +26,83 @@ public class Player {
    *
    * @param eights object that encapsulates the state of the game
    * @param previousCard the card on top of the discard pile
-   * @return the card played by the player for this turn
+   * @return the card played by the player for this turn, and remove it from his hand
    */
   public Card play(Eights eights, Card previousCard) {
-    Card card = searchForMatch(eights, previousCard);
-    if (card == null) {
-      card = drawForMatch(eights, previousCard);
+    Hand playableCards = getPlayableCards(eights, previousCard);
+    if (playableCards.isEmpty()) {
+      Card card = drawForMatch(eights, previousCard);
+      return card;
     }
-
-    return card;
+    
+    Card card = getHighestCard(playableCards);
+    int cardIndex = hand.getCards().indexOf(card);
+    return hand.popCard(cardIndex);
+  }
+  
+  /**
+  * Return the Card with the highest point value according to the rules of Crazy Eights.
+  *
+  * @param playableCards hand of cards from which to select the card with the highest point value
+  * @return the card with the highest point value
+  */
+  private Card getHighestCard(Hand playableCards) {
+    int highestValue = 0;
+    Card highestCard = null;
+    for (Card card : playableCards.getCards()) {
+      int value = getCardValue(card);
+      if (value > highestValue) {
+        highestValue = value;
+        highestCard = card;
+      }
+    }
+    
+    return highestCard;
+  }
+  
+  /**
+  * Get the point value for a card, according to the rules of Crazy Eights.
+  *
+  * @param card the card for which to calculate the point value
+  * @return the number of points that the card is worth
+  */
+  private int getCardValue(Card card) {
+    int cardRank = card.getRank();
+    // If t is an 8
+    if (cardRank == 7) {
+      return 20;
+      // If it is a number card
+    } else if (cardRank < 10) {
+      return cardRank + 1;
+      // If it is an Ace
+    } else if (cardRank == 13) {
+      return 1;
+      // If it is a face card
+    } else if (cardRank >= 10 && cardRank <= 12) {
+      return 10;
+    }
+    
+    // Otherwise return 0 to indicate error
+    System.err.println("Invalid card rank");
+    return 0;
+  }
+  
+  /**
+  * Return a hand of playable cards from the player's hand for the current turn.
+  * 
+  * @param eights Instance of the game state
+  * @param previousCard the card on top of the discard pile which has to be matched for this turn
+  * @return a hand of playable cards from the player's hand
+  */
+  private Hand getPlayableCards(Eights eights, Card previousCard) {
+    Hand playableCards = new Hand("Playable Cards");
+    for (Card card : hand.getCards()) {
+      if (cardMatches(card, previousCard)) {
+        playableCards.addCard(card);
+      }
+    }
+    
+    return playableCards;
   }
 
   /**
@@ -44,7 +112,7 @@ public class Player {
    * @param previousCard the card on top of the discard pile
    * @return a matching card from the player's hand, if he has one, or null if he does not
    */
-  public Card searchForMatch(Eights eights, Card previousCard) {
+  private Card searchForMatch(Eights eights, Card previousCard) {
     for (int i = 0; i < hand.size(); i++) {
       Card card = hand.getCard(i);
       if (cardMatches(card, previousCard)) {
@@ -63,7 +131,7 @@ public class Player {
    * @param previousCard the card on top of the discard pile
    * @return the first drawn Card that can be played
    */
-  public Card drawForMatch(Eights eights, Card previousCard) {
+  private Card drawForMatch(Eights eights, Card previousCard) {
     while (true) {
       Card card = eights.drawCard();
       System.out.println(name + " draws " + card);
@@ -83,7 +151,7 @@ public class Player {
    * @param c2 second card to check for a match
    * @return true or false, depending on if the cards match or not
    */
-  public static boolean cardMatches(Card c1, Card c2) {
+  private static boolean cardMatches(Card c1, Card c2) {
     // Remember the RANK table in Card.java, number ranks are off by -1
     return c1.getSuit() == c2.getSuit() || c1.getRank() == c2.getRank() || c1.getRank() == 7;
   }
