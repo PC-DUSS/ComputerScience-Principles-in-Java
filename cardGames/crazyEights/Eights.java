@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -22,8 +23,11 @@ public class Eights {
    next turn. (displayState)
   */
 
+  private ArrayList<Player> players;
   private Player one;
   private Player two;
+  private Player three;
+  private Player four;
   private Hand drawPile;
   private Hand discardPile;
   private Scanner in;
@@ -32,14 +36,22 @@ public class Eights {
   public Eights() {
     in = new Scanner(System.in);
     Deck deck = new Deck("Deck");
-    one = new Player("Player 1");
-    two = new Player("Player 2");
     drawPile = new Hand("Draw Pile");
     discardPile = new Hand("Discard Pile");
+    
+    one = new Player("Player 1");
+    two = new Player("Player 2");
+    three = new Player("Player 3");
+    four = new Player("Player 4");
+    players = new ArrayList<Player>();
+    players.add(one);
+    players.add(two);
+    players.add(three);
+    players.add(four);
+
 
     deck.shuffle();
-    one.dealHand(deck);
-    two.dealHand(deck);
+    dealHandToPlayers(deck);
     deck.deal(discardPile, 1);
     deck.dealAll(drawPile);
   }
@@ -50,7 +62,13 @@ public class Eights {
    * @return true or false, depending on if the hand of any player is empty
    */
   public boolean isDone() {
-    return one.getHand().isEmpty() || two.getHand().isEmpty();
+    for (Player player : players) {
+      if (player.getHand().isEmpty()) {
+        return true;
+      }
+    }
+    
+    return false;
   }
 
   /** Reshuffle the discard pile and turn it into a draw pile, except for the card on top. */
@@ -74,6 +92,17 @@ public class Eights {
 
     return drawPile.popCard();
   }
+  
+  /**
+  * Deal all players their initial hand.
+  *
+  * @param deck the starting deck
+  */
+  private void dealHandToPlayers(Deck deck) {
+    for (Player player : players) {
+      player.dealHand(deck);
+    }
+  }
 
   /**
    * Handle player turns.
@@ -81,12 +110,14 @@ public class Eights {
    * @param current player whose turn it currently is
    * @return player whose turn it is about to be
    */
-  public Player nextPlayer(Player current) {
-    if (current == one) {
-      return two;
+  private Player nextPlayer(Player current) {
+    int indexOfCurrent = players.indexOf(current);
+    // If the last player who played was the final player, go back to player one
+    if (indexOfCurrent == players.size() - 1) {
+      return players.get(0);
     }
-
-    return one;
+    
+    return players.get(indexOfCurrent + 1);
   }
 
   /**
@@ -94,8 +125,10 @@ public class Eights {
    * draw pile.
    */
   public void displayState() {
-    one.display();
-    two.display();
+    for (Player player : players) {
+      player.display();
+    }
+
     discardPile.display();
     System.out.printf("Draw Pile:\n%d cards\n", drawPile.size());
     in.nextLine();
@@ -106,7 +139,7 @@ public class Eights {
    *
    * @param player the player whose turn it is to play
    */
-  public void takeTurn(Player player) {
+  private void takeTurn(Player player) {
     // This gets the top card without removing it from the discard pile, as popCard() would
     Card topCard = discardPile.lastCard();
     Card nextCard = player.play(this, topCard); // 'this' is this instance of Eights
@@ -119,7 +152,7 @@ public class Eights {
    *
    * @param player the player whose turn it is to play
    */
-  public void takeTurnSilently(Player player) {
+  private void takeTurnSilently(Player player) {
     // This gets the top card without removing it from the discard pile, as popCard() would
     Card topCard = discardPile.lastCard();
     Card nextCard = player.play(this, topCard); // 'this' is this instance of Eights
@@ -141,9 +174,15 @@ public class Eights {
       player = nextPlayer(player);
     }
 
-    one.displayScore();
-    two.displayScore();
+    displayPlayerScores();
     return whoWon();
+  }
+  
+  /** Display the penalty score for each player, should be invoked at the end of the game. */
+  private void displayPlayerScores() {
+    for (Player player : players) {
+      player.displayScore();
+    }
   }
   
   /**
@@ -164,32 +203,29 @@ public class Eights {
     return winner;
   }
   
+  /**
+  * Determine the winner for the current match.
+  *
+  * @return the player who won the current match
+  */
   private Player whoWon() {
-    if (one.getHand().isEmpty()) {
-      return one;
-    } else if (two.getHand().isEmpty()) {
-      return two;
-    } else {
-      System.err.println("Error in whoWon()");
-      return null;
+    for (Player player : players) {
+      if (player.getHand().isEmpty()) {
+        return player;
+      }
     }
+    
+    // Return null if an error has occured
+    System.err.println("Error in whoWon()");
+    return null;
   }
   
   /**
-  * Return the Player 1 object.
+  * Return the specified player from the list of players.
   * 
-  * @return the Player 1 object
+  * @return the player specified by the given player number
   */
-  public Player getPlayerOne() {
-    return one;
-  }
-  
-  /**
-  * Return the Player 2 object.
-  * 
-  * @return the Player 2 object
-  */
-  public Player getPlayerTwo() {
-    return two;
+  public Player getPlayer(int playerNum) {
+    return players.get(playerNum - 1);
   }
 }

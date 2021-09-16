@@ -9,7 +9,6 @@ public class Main {
 
   public static void main(String args[]) {
     Tournament tourney = new Tournament();
-    Player winner = tourney.playTournament();
-    System.out.printf("The grand winner of the tournament is %s!\n", winner.getName());
+    tourney.playTournament();
   }
 }
