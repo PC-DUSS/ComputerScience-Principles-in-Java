@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Scanner;
 import javax.swing.JFrame;
@@ -13,10 +14,12 @@ import javax.swing.JFrame;
  * */
 public class Conway {
   private GridCanvas grid;
+  // Constant for the size of the grid squares
+  private static final int size = 20;
   
   /** Constructor. */
   public Conway() {
-    grid = new GridCanvas(5, 10, 20);
+    grid = new GridCanvas(5, 10, size);
     // Oscillator
     //grid.turnOn(2, 1);
     //grid.turnOn(2, 2);
@@ -51,8 +54,8 @@ public class Conway {
 	if (line.startsWith("!")) {
 	  continue;
 	} else if (line.startsWith(".") || line.startsWith("O")) {
-	  // TODO Go through the row only once, acquiring the dimensions of the grid at the same time as you determine
-	  // the positioning of the active cells
+	  // Go through the row only once, acquiring the dimensions of the grid at the same time as you determine the
+	  // positioning of the active cells
 	  rows++;
 	  if (columns == 0) {
 	    // This will hold the number of columns in the grid
@@ -64,7 +67,7 @@ public class Conway {
 	    if (line.charAt(c) == 'O') {
 	      // Get the number of the current cell
 	      String cellName = String.format("cell%d", (rows - 1) * columns + c);
-	      // Store the coordinates of the cell in the hashmap with its name
+	      // Store the coordinates of the cell in the hashmap as (K=cellName, V={row, column})
 	      int[] coordinates = {rows - 1, c};
 	      cellsToActivate.put(cellName, coordinates);
 	    }
@@ -78,18 +81,24 @@ public class Conway {
       e.printStackTrace();
     }
     
-    System.out.println("Num of rows: " + rows);
-    System.out.println("Num of columns: " + columns);
-    System.out.println(cellsToActivate.toString());
-    displayCellsToActivate(cellsToActivate);
+    // Tests START
+    // System.out.println("Num of rows: " + rows);
+    // System.out.println("Num of columns: " + columns);
+    // System.out.println("Num of cells to activate: " + cellsToActivate.keySet().size());
+    // System.out.println(cellsToActivate.toString());
+    // System.out.println();
+    // displayCellsToActivate(cellsToActivate);
+    // Tests END
     
-    // Stub
-    grid = new GridCanvas(5, 10, 20);
-    grid.turnOn(2, 0);
-    grid.turnOn(2, 1);
-    grid.turnOn(2, 2);
-    grid.turnOn(1, 2);
-    grid.turnOn(0, 1);
+    // Instanciate the game grid and activate the cells according to the file
+    grid = new GridCanvas(rows, columns, size);
+    for (String cellName: cellsToActivate.keySet()) {
+      int[] coordinates = cellsToActivate.get(cellName);
+      int row = coordinates[0];
+      int column = coordinates[1];
+      grid.turnOn(row, column);
+      System.out.printf("Activated %s at %s\n", cellName, Arrays.toString(coordinates));
+    }
   }
   
   /**
@@ -98,7 +107,11 @@ public class Conway {
    * @param cells the cells that will be activated
    * */
   private void displayCellsToActivate(HashMap<String, int[]> cells) {
-    // TODO
+    for (String key : cells.keySet()) {
+      int[] rawCoordinates = cells.get(key);
+      String prettyCoordinates = Arrays.toString(rawCoordinates);
+      System.out.printf("%s: %s\n", key, prettyCoordinates);
+    }
   }
   
   /** Game loop. */
@@ -109,12 +122,12 @@ public class Conway {
       grid.repaint();
       // Pause for 500ms
       try {
-	Thread.sleep(250);
+	Thread.sleep(500);
       } catch (InterruptedException e) {
 	// do nothing
       }
       
-      System.out.println(grid.countOn());
+      // System.out.println(grid.countOn());
     }
   }
 
@@ -196,6 +209,7 @@ public class Conway {
   /** Main program. */
   public static void main(String[] args) {
     String title = "Conway's game of life";
+    // Create an instance of the game using a .cells file
     Conway game = new Conway("glider.cells");
     JFrame frame = new JFrame(title);
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
