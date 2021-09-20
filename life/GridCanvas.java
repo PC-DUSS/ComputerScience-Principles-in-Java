@@ -9,8 +9,10 @@ import java.awt.Graphics;
  * @version 1.0
  * */
 public class GridCanvas extends Canvas {
+  // 2D array containing all the cells in the grid
   private Cell[][] array;
   
+  /** Constructor. */
   public GridCanvas(int rows, int columns, int size) {
     array = new Cell[rows][columns];
     // Now populate the array
@@ -101,9 +103,59 @@ public class GridCanvas extends Canvas {
       }
       // If the cell doesn't exist
     } catch (ArrayIndexOutOfBoundsException e) {
-      // do nothing
+      return spilloverTest(row, column);
     }
     
     return 0;
+  }
+  
+  /**
+   * Test to see if a cell is alive, according to toroidal grid style.
+   * 
+   * @param row the row index of the cell, starting from 0
+   * @param column the column index of the cell, starting from 0
+   * @return 1 if the cell is alive, or 0 if it is not alive
+   * */
+  private int spilloverTest(int row, int column) {
+    // Handle rows spilling over borders
+    if (row == -1) {
+      row = array.length - 1;
+    } else if (row == array.length) {
+      row = 0;
+    }
+    
+    // Handle columns spilling over borders
+    if (column == -1) {
+      column = array[0].length - 1;
+    } else if (column == array[0].length) {
+      column = 0;
+    }
+    
+    // Test a cell according to the corrected cell coordinates
+    if (array[row][column].isOn()) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  
+  /**
+   * Count the total number of cells that are alive within the game grid.
+   * 
+   * @return the number of cells that are alive
+   * */
+  public int countOn() {
+    int numberAlive = 0;
+    // For each row of cells in the array
+    for (Cell row[] : array) {
+    // For each cell in the row of cells
+      for (Cell cell : row) {
+	if (cell.isOn()) {
+	  numberAlive++;
+	}
+      }
+    }
+    
+    return numberAlive;
   }
 }
