@@ -17,11 +17,10 @@ import javax.swing.JFrame;
 public class Conway {
   private GridCanvas grid;
   // Constant for the size of the grid squares
-  private static final int size = 20;
   
   /** Constructor. */
   public Conway() {
-    grid = new GridCanvas(5, 10, size);
+    grid = new GridCanvas(5, 10, 20);
     // Oscillator
     grid.turnOn(2, 1);
     grid.turnOn(2, 2);
@@ -44,36 +43,39 @@ public class Conway {
    * @param filename the name of the file, including the file extension
    * */
   public Conway(String fileName) {
+    // Variables to count the number of rows and columns, in order to later create the grid
     int rows = 0;
     int columns = 0;
+    // Extract all the lines from the file which are relevant
     ArrayList<String> listOfLines = new ArrayList<String>();
     try {
+      // Create a file reader on a file object
       File fileObject = new File(fileName);
       Scanner reader = new Scanner(fileObject);
       while (reader.hasNextLine()) {
-	String line = reader.nextLine();
+	String line = reader.nextLine(); // The current line being read
 	// Add all relevant lines to the list of lines
 	if (line.startsWith(".") || line.startsWith("O")) {
 	  listOfLines.add(line);
-	  // Handle acquisition of the grid dimensions as you build up the list
+	  // Increment the row counter after a row has been read
 	  rows++;
+	  // If we haven't counted the columns already, count the columns 
 	  if (columns == 0) {
-	    // This will hold the number of columns in the grid
-	    columns = line.length();
+	    columns = line.length(); // Equivalent to the number of chars on a valid line
 	  }
 	}
       }
       
-      // Use the discovered dimensions to instanciate the grid
-      GridCanvas grid = new GridCanvas(rows, columns, size);
-      // Now parse the list to determine the grid and cell arrangement
+      // Use the stored dimensions to instanciate the grid
+      grid = new GridCanvas(rows, columns, 20);
+      // Now parse the list of lines to determine the grid and cell arrangement
       Iterator<String> lineIterator = listOfLines.iterator();
-      int row = 0;
+      int row = 0; // Store the number of the current row for the grid
       while (lineIterator.hasNext()) {
-	String line = lineIterator.next();
+	String line = lineIterator.next(); // The current line being checked
 	for (int column = 0; column < line.length(); column++) {
-	  if (line.charAt(column) == '0') {
-	    grid.turnOn(row, column);
+	  if (line.charAt(column) == 'O') {
+	    grid.turnOn(row, column); // Using current row and current column
 	  }
 	}
 	
