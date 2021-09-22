@@ -1,41 +1,40 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Arrays;
-import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.HashMap;
 import java.util.Scanner;
 import javax.swing.JFrame;
 
 /**
- * Represent the rules of GoL, and the overall state of the game; this version follows the exercise using an ArrayList
- * or parsing the text file.
+ * Represent the rules of GoL, and the overall state of the game; this version uses my personal solution to parsing a
+ * text file, using a HashMap, as opposed to following the exercise which prescribes using an ArrayList.
  * 
  * @author Pierre-Charles Dussault
  * @since 2021/09/19
  * @version 1.0
  * */
-public class Conway {
+public class MyConway {
   private GridCanvas grid;
   // Constant for the size of the grid squares
   private static final int size = 20;
   
   /** Constructor. */
-  public Conway() {
+  public MyConway() {
     grid = new GridCanvas(5, 10, size);
     // Oscillator
-    grid.turnOn(2, 1);
-    grid.turnOn(2, 2);
-    grid.turnOn(2, 3);
-    grid.turnOn(1, 7);
-    grid.turnOn(2, 7);
-    grid.turnOn(3, 7);
+    //grid.turnOn(2, 1);
+    //grid.turnOn(2, 2);
+    //grid.turnOn(2, 3);
+    //grid.turnOn(1, 7);
+    //grid.turnOn(2, 7);
+    //grid.turnOn(3, 7);
     
     // Glider
-    // grid.turnOn(2, 0);
-    // grid.turnOn(2, 1);
-    // grid.turnOn(2, 2);
-    // grid.turnOn(1, 2);
-    // grid.turnOn(0, 1);
+    grid.turnOn(2, 0);
+    grid.turnOn(2, 1);
+    grid.turnOn(2, 2);
+    grid.turnOn(1, 2);
+    grid.turnOn(0, 1);
   }
   
   /**
@@ -43,49 +42,78 @@ public class Conway {
    * 
    * @param filename the name of the file, including the file extension
    * */
-  public Conway(String fileName) {
+  public MyConway(String fileName) {
     int rows = 0;
     int columns = 0;
-    ArrayList<String> listOfLines = new ArrayList<String>();
+    HashMap<String, int[]> cellsToActivate = new HashMap<>();
     try {
       File fileObject = new File(fileName);
       Scanner reader = new Scanner(fileObject);
       while (reader.hasNextLine()) {
 	String line = reader.nextLine();
-	// Add all relevant lines to the list of lines
-	if (line.startsWith(".") || line.startsWith("O")) {
-	  listOfLines.add(line);
-	  // Handle acquisition of the grid dimensions as you build up the list
+	// Ignore commented lines (that start with '!')
+	if (line.startsWith("!")) {
+	  continue;
+	} else if (line.startsWith(".") || line.startsWith("O")) {
+	  // Go through the row only once, acquiring the dimensions of the grid at the same time as you determine the
+	  // positioning of the active cells
 	  rows++;
 	  if (columns == 0) {
 	    // This will hold the number of columns in the grid
 	    columns = line.length();
 	  }
-	}
-      }
-      
-      // Use the discovered dimensions to instanciate the grid
-      GridCanvas grid = new GridCanvas(rows, columns, size);
-      // Now parse the list to determine the grid and cell arrangement
-      Iterator<String> lineIterator = listOfLines.iterator();
-      int row = 0;
-      while (lineIterator.hasNext()) {
-	String line = lineIterator.next();
-	for (int column = 0; column < line.length(); column++) {
-	  if (line.charAt(column) == '0') {
-	    grid.turnOn(row, column);
+	  
+	  for (int c = 0; c < columns; c++) {
+	    // If the cell should be activated
+	    if (line.charAt(c) == 'O') {
+	      // Get the number of the current cell
+	      String cellName = String.format("cell%d", (rows - 1) * columns + c);
+	      // Store the coordinates of the cell in the hashmap as (K=cellName, V={row, column})
+	      int[] coordinates = {rows - 1, c};
+	      cellsToActivate.put(cellName, coordinates);
+	    }
 	  }
 	}
-	
-	row++;
-      }
-      
+      } // end of reader loop
+    
       reader.close();
     } catch (FileNotFoundException e) {
       System.err.println("Error.");
       e.printStackTrace();
       // Exiting with status 1 means error, whereas status of 0 means success
       System.exit(1);
+    }
+    
+    // Tests START
+    // System.out.println("Num of rows: " + rows);
+    // System.out.println("Num of columns: " + columns);
+    // System.out.println("Num of cells to activate: " + cellsToActivate.keySet().size());
+    // System.out.println(cellsToActivate.toString());
+    // System.out.println();
+    // displayCellsToActivate(cellsToActivate);
+    // Tests END
+    
+    // Instanciate the game grid and activate the cells according to the file
+    grid = new GridCanvas(rows, columns, size);
+    for (String cellName : cellsToActivate.keySet()) {
+      int[] coordinates = cellsToActivate.get(cellName);
+      int row = coordinates[0];
+      int column = coordinates[1];
+      grid.turnOn(row, column);
+      System.out.printf("Activated %s at %s\n", cellName, Arrays.toString(coordinates));
+    }
+  }
+  
+  /**
+   * Display all the cells that should be activated on game start, and their respective coordinates.
+   * 
+   * @param cells the cells that will be activated
+   * */
+  private void displayCellsToActivate(HashMap<String, int[]> cells) {
+    for (String key : cells.keySet()) {
+      int[] rawCoordinates = cells.get(key);
+      String prettyCoordinates = Arrays.toString(rawCoordinates);
+      System.out.printf("%s: %s\n", key, prettyCoordinates);
     }
   }
   
@@ -185,7 +213,7 @@ public class Conway {
   public static void main(String[] args) {
     String title = "Conway's game of life";
     // Create an instance of the game using a .cells file
-    Conway game = new Conway("glider.cells");
+    MyConway game = new MyConway("glider.cells");
     JFrame frame = new JFrame(title);
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frame.setResizable(false);
