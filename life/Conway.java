@@ -43,16 +43,15 @@ public class Conway {
    * 
    * @param filename the name of the file, including the file extension
    * */
-  public Conway(String fileName) {
+  public Conway(String fileName) throws Exception {
     // Extract all the lines from the file which are relevant
     try {
       // Create a file reader on a file object
       File fileObject = new File(fileName);
       Scanner reader = new Scanner(fileObject);
-      
       // Check if file is an RLE file
       if (isRLE(fileName)) {
-	//decodeRLEFile(reader);
+	decodeRLEFile(reader);
       } else {
 	// Otherwise assume the file is a cells file
 	decodeCellsFile(reader);
@@ -161,15 +160,15 @@ public class Conway {
   private void decodeRLEFile(Scanner reader) throws Exception {
     while (reader.hasNextLine()) {
       String line = reader.nextLine();
-      if (line.startsWith("#")) {
-	continue;
-      } else if (line.startsWith("x")) {
+      if (line.startsWith("x")) {
+	// Handle the grid dimensions
 	int[] dimensions = readDimensions(line);
-	int columns = dimensions[0];
-	int rows = dimensions[1];
+	int rows = dimensions[0];
+	int columns = dimensions[1];
+	grid = new GridCanvas(rows, columns, 20);
       } else if (line.startsWith("$")) {
-	// Determine the active cells
-	// TODO
+	// Handle the placement of cells
+	determineCellsForRLE(line);
       }
     }
   }
@@ -189,7 +188,6 @@ public class Conway {
       // Add all relevant lines to the list of lines
       if (line.startsWith(".") || line.startsWith("O")) {
 	listOfLines.add(line);
-	// Increment the row counter after a row has been read
 	rows++;
 	// If we haven't counted the columns already, count the columns 
 	if (columns == 0) {
@@ -200,18 +198,56 @@ public class Conway {
     
     // Use the stored dimensions to instanciate the grid
     grid = new GridCanvas(rows, columns, 20);
-    // Now parse the list of lines to determine the grid and cell arrangement
-    Iterator<String> lineIterator = listOfLines.iterator();
-    int row = 0; // Store the number of the current row for the grid
-    while (lineIterator.hasNext()) {
-      String line = lineIterator.next(); // The current line being checked
-      for (int column = 0; column < line.length(); column++) {
-	if (line.charAt(column) == 'O') {
-	  grid.turnOn(row, column); // Using current row and current column
-	}
+    // Parse the saved lines to determine the active cells
+    parseLines(listOfLines);
+  }
+  
+  /**
+   * Determine the arrangement of active and inactive cells in the grid for an RLE file.
+   * 
+   * @param line the line to parse
+   * */
+  private void determineCellsForRLE(String line) throws Exception {
+    int row = 0;
+    int column = 0;
+    int multiplier = 1;
+    for (int c = 1; c < line.length(); c++) {
+      int[] gridPosition = {row, column};
+      char currentChar = line.charAt(c);
+      if (Character.isDigit(currentChar)) {
+	multiplier = parseDigits(line, c);
+      } else if (currentChar == 'b') {
+	// Move column tracker to next unused cell in this row and reset the multiplier
+	column += multiplier;
+	multiplier = 1;
+      } else if (currentChar == 'o') {
+	activateConsecutiveCells(multiplier, gridPosition);
+	column += multiplier;
+	multiplier = 1;
+      } else if (currentChar == '$') {
+	// Change grid position to the start of the next line
+	row++;
+	column = 0;
+      } else if (currentChar == '!') {
+	// End of grid arrangement instructions
+	break;
       }
-      
-      row++;
+    }
+  }
+  
+  /**
+   * Activate cells from a row in the grid in a consecutive streak, given an initial grid position and a multiplier.
+   * 
+   * @param multiplier the number of cells in this streak to fill
+   * @param gridPosition the initial position for the row in which to fill the consecutive streak of cells in the format
+   * 	[row, column]
+   * */
+  private void activateConsecutiveCells(int multiplier, int[] gridPosition) {
+    int row = gridPosition[0];
+    int column = gridPosition[1];
+    for (int i = 0; i < multiplier; i++) {
+      grid.turnOn(row, column);
+      column++;
     }
   }
   
@@ -219,37 +255,33 @@ public class Conway {
    * Read x (columns) and y (rows) dimensions from a line of text inside an RLE file.
    * 
    * @param line the line of text to parse
-   * @return an array of the dimensions in format (x, y)
+   * @return an array of the dimensions in format [rows, columns]
    * */
   private static int[] readDimensions(String line) throws Exception {
     int c = 0;
-    int x = 0;
-    int y = 0;
+    int rows = 0;
+    int columns = 0;
     while (c < line.length()) {
       if (line.charAt(c) == 'x') {
-	// find the equal sign
 	c = findEqualSign(line, c);
-	// find the index of the first digit following the equal sign
 	c = findDigit(line , c + 1);
-	// parse the digits to get the number value for x
-	x = parseDigits(line, c);
+	columns = parseDigits(line, c);
 	// set c to the index of the first char following the last digit of the chain of consecutive digits
-	c = c + String.valueOf(x).length();
+	c = c + String.valueOf(columns).length();
       } else if (line.charAt(c) == 'y') {
-	// do same thing for y, but ignore the index counter at the end
 	c = findEqualSign(line, c);
 	c = findDigit(line, c);
-	y = parseDigits(line, c);
+	rows = parseDigits(line, c);
       }
       
       c++;
     }
     
-    if (x == 0 || y == 0) {
+    if (columns == 0 || rows == 0) {
       throw new Exception("Error, dimensions not correctly set.");
     }
     
-    int[] dimensions = {x, y};
+    int[] dimensions = {rows, columns};
     return dimensions;
   }
   
@@ -349,6 +381,26 @@ public class Conway {
   }
   
   /**
+   * Parse the list of lines to determine the grid and cell arrangement.
+   * 
+   * @param listOfLines ArrayList containing all relevant lines to parse
+   * */
+  private void parseLines(ArrayList<String> listOfLines) {
+    Iterator<String> lineIterator = listOfLines.iterator();
+    int row = 0; // Store the number of the current row for the grid
+    while (lineIterator.hasNext()) {
+      String line = lineIterator.next(); // The current line being checked
+      for (int column = 0; column < line.length(); column++) {
+	if (line.charAt(column) == 'O') {
+	  grid.turnOn(row, column); // Using current row and current column
+	}
+      }
+
+      row++;
+    }
+  }
+  
+  /**
    * Pause the game for a given number of milliseconds.
    * 
    * @param msCount number of milliseconds for which to pause the game
@@ -366,10 +418,10 @@ public class Conway {
    * 
    * @param args command line arguments passed along from main method
    * */
-  public static void playConway(String[] args) {
+  public static void playConway(String[] args) throws Exception {
     String title = "Conway's game of life";
     // Create an instance of the game using a .cells file
-    Conway game = new Conway("glider.cells");
+    Conway game = new Conway("oscillator.rle");
     JFrame frame = new JFrame(title);
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frame.setResizable(false);
@@ -382,6 +434,6 @@ public class Conway {
   
   /** Main program. */
   public static void main(String[] args) throws Exception {
-    // playConway(args);
+    playConway(args);
   }
 }
