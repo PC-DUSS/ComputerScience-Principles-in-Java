@@ -8,7 +8,7 @@ import javax.swing.JFrame;
 
 /**
  * Represent the rules of GoL, and the overall state of the game; this version follows the exercise using an ArrayList
- * or parsing the text file.
+ * for parsing the text file.
  * 
  * @author Pierre-Charles Dussault
  * @since 2021/09/19
