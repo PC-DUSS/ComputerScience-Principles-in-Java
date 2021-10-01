@@ -329,7 +329,6 @@ public class Conway {
       while (!Character.isDigit(line.charAt(index))) {
 	index ++;
       }
-      
     } catch (Exception e) {
       throw new Exception("Error out of bounds in findDigit()");
     }
@@ -349,7 +348,6 @@ public class Conway {
       while (line.charAt(index) != '=') {
 	index++;
       }
-      
     } catch (Exception e) {
       throw new Exception("Error, out of bounds in findEqualSign()");
     }
