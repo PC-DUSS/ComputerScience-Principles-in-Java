@@ -406,11 +406,11 @@ public class Conway {
    * @param msCount number of milliseconds for which to pause the game
    * */
   private static void pause(int msCount) {
-      try {
-	Thread.sleep(msCount);
-      } catch (InterruptedException e) {
-	// do nothing
-      }
+    try {
+      Thread.sleep(msCount);
+    } catch (InterruptedException e) {
+      // do nothing
+    }
   }
   
   /**
