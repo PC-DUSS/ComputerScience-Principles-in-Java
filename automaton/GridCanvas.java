@@ -6,7 +6,6 @@ import java.awt.Graphics;
  * 
  * @author Pierre-Charles Dussault
  * @since 2021/09/17
- * @version 1.0
  * */
 public class GridCanvas extends Canvas {
   // 2D array containing all the cells in the grid

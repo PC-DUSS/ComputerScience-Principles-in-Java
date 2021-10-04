@@ -12,11 +12,8 @@ import javax.swing.JFrame;
  * 
  * @author Pierre-Charles Dussault
  * @since 2021/09/19
- * @version 1.0
  * */
-public class Conway {
-  private GridCanvas grid;
-  // Constant for the size of the grid squares
+public class Conway extends Automaton {
   
   /** Constructor. */
   public Conway() {
@@ -63,17 +60,6 @@ public class Conway {
       e.printStackTrace();
       // Exiting with status 1 means error, whereas status of 0 means success
       System.exit(1);
-    }
-  }
-  
-  /** Game loop. */
-  private void mainLoop() {
-    while (true) {
-      update();
-      // repaint() comes from Canvas class
-      grid.repaint();
-      pause(500);
-      // System.out.println(grid.countOn());
     }
   }
 
@@ -146,9 +132,11 @@ public class Conway {
     }
   }
   
-  /** Update the game state. */
+  /** Update the game state; override from parent abstract class. */
   public void update() {
+    // Get the number of neighbors for each cell in the grid
     int[][] neighborCounts = countNeighbors();
+    // Update each cell's status according to its number of neighbors
     updateGrid(neighborCounts);
   }
   
@@ -411,27 +399,15 @@ public class Conway {
     }
   }
   
-  /**
-   * Play Conway's Game of Life with current settings.
-   * 
-   * @param args command line arguments passed along from main method
-   * */
-  public static void playConway(String[] args) throws Exception {
+  /** Play Conway's Game of Life with current settings. */
+  public static void playConway() throws Exception {
     String title = "Conway's game of life";
-    // Create an instance of the game using a .cells file
     Conway game = new Conway("oscillator.rle");
-    JFrame frame = new JFrame(title);
-    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    frame.setResizable(false);
-    // This adds the canvas (GridCanvas, which is subclass of Canvas) to the frame
-    frame.add(game.grid);
-    frame.pack(); // This resizes the frame to fit the canvas
-    frame.setVisible(true);
-    game.mainLoop();
+    game.run(title, 2);
   }
   
   /** Main program. */
   public static void main(String[] args) throws Exception {
-    playConway(args);
+    playConway();
   }
 }

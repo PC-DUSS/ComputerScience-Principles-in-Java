@@ -6,19 +6,24 @@ import java.awt.Graphics;
  * 
  * @author Pierre-Charles Dussault
  * @since 2021/09/17
- * @version 1.0
  * */
 public class Cell {
   // Cells don't move, only their state can change
-  private final int x;
-  private final int y;
-  private final int size;
+  protected final int x;
+  protected final int y;
+  protected final int size;
   // Cell is alive=1    cell is dead=0
-  private int state;
+  protected int state;
   // Possible colors for each cell, index=0 --> white (dead)    index=1 --> black (alive)
   public static final Color[] COLORS = {Color.WHITE, Color.BLACK};
   
-  /** Constructor; sets state to a default value. */
+  /** 
+   * Constructor; sets state to a default value of dead/inactive.
+   * 
+   * @param x x-axis coordinate; increases towards the right
+   * @param y y-axis coordinate; increases towards the bottom
+   * @param size size in pixels
+   * */
   public Cell(int x, int y, int size) {
     this.x = x;
     this.y = y;
@@ -47,7 +52,7 @@ public class Cell {
    * @return true or false, depending on if this cell is alive or not
    * */
   public boolean isOn() {
-    return state == 1;
+    return state != 0;
   }
   
   /**
