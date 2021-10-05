@@ -9,11 +9,11 @@ import java.awt.Graphics;
  * */
 public class Cell {
   // Cells don't move, only their state can change
-  protected final int x;
-  protected final int y;
-  protected final int size;
+  private final int x;
+  private final int y;
+  private final int size;
   // Cell is alive=1    cell is dead=0
-  protected int state;
+  private int state;
   // Possible colors for each cell, index=0 --> white (dead)    index=1 --> black (alive)
   public static final Color[] COLORS = {Color.WHITE, Color.BLACK};
   

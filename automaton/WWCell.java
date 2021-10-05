@@ -8,69 +8,71 @@ import java.awt.Color;
  * @since 2021/10/03
  * */
 public class WWCell extends Cell {
-  // For this implementation, the state values are as follows: 
-  // 0=empty(black) 1=electron_head(blue) 2=electron_tail(red) 3=conductor(yellow)
-  
+   // Cells don't move, only their state can change
+  private final int x;
+  private final int y;
+  private final int size;
+  // Possible states    dead=0    electron_head=1    electron_tail=2    conductor=3
+  private int state;
+  // Possible colors for each cell, depending on its state
+  //    dead=BLACK    electron_tail=BLUE    electron_tail=RED    conductor=YELLOW
   public static final Color[] COLORS = {Color.BLACK, Color.BLUE, Color.RED, Color.YELLOW};
   
   /** 
-   * Constructor; sets state to a default value of empty. 
+   * Constructor; sets state to a default value of dead/inactive.
    * 
    * @param x x-axis coordinate; increases towards the right
    * @param y y-axis coordinate; increases towards the bottom
    * @param size size in pixels
    * */
   public WWCell(int x, int y, int size) {
-    super(x, y, size);
+    this.x = x;
+    this.y = y;
+    this.size = size;
+    // Default the cell's state to dead when creating the grid
+    this.state = 0;
   }
   
-  /** 
-   * Getter for the cell's state. 
+  /**
+   * Draw this cell.
    * 
-   * @return the integer representing the state of the cell
+   * @param g Graphics object passed automatically to the method
+   * */
+  public void draw(Graphics g) {
+    // Set the color according to the state of the this cell
+    g.setColor(COLORS[state]);
+    // Leave a thin border of space between the cell's rect's bounds and the color filling
+    g.fillRect(x + 1, y + 1, size - 1, size - 1);
+    g.setColor(Color.LIGHT_GRAY);
+    // Now draw a lightgray rect around the inner colored rect, to create a grid across the game board
+    g.drawRect(x, y, size, size);
+  }
+  
+  /**
+   * Get the state for this cell.
+   * 
+   * @return the state of this cell
    * */
   public int getState() {
     return state;
   }
   
-  /** Setter for the cell's state. */
+  /**
+   * Determine if the state of this cell is equal to a given state.
+   * 
+   * @param comparisonState state with which to compare the state of this cell
+   * @return true or false, depending on if the the two states are equal
+   * */
+  public boolean isState(int comparisonState) {
+    return state == comparisonState;
+  }
+  
+  /** 
+   * Make this cell alive. 
+   * 
+   * @param newState the state to give to this cell: dead=0, electron_head=1, electron_tail=2, conductor=3
+   * */
   public void setState(int newState) {
     state = newState;
   }
-  
-  /**
-   * Check if a cell's state is equal to a given state.
-   * 
-   * @param stateToCheck the state with which to compare the cell's actual state
-   * @return true or false, depending on if they match or not
-   * */
-  public boolean isState(int stateToCheck) {
-    return state == stateToCheck;
-  }
-  
-  /* Legacy methods from Cell class; override to display error message. */
-  
-  public boolean isOn() {
-    System.err.println("method isOn() is deprecated in class WWCell.");
-    System.exit(1);
-    return state != 0;
-  }
-
-  public boolean isOff() {
-    System.err.println("method isOn() is deprecated in class WWCell.");
-    System.exit(1);
-    return state == 0;
-  }
-
-  public void turnOn() {
-    System.err.println("method isOn() is deprecated in class WWCell.");
-    System.exit(1);
-  }
-
-  public void turnOff() {
-    System.err.println("method isOn() is deprecated in class WWCell.");
-    System.exit(1);
-  }
-  
-  /* End of legacy method error overrides. */
 }
