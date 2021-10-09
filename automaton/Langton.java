@@ -8,6 +8,7 @@ import javax.swing.JFrame;
  * @since 2021/10/01
  * */
 public class Langton extends Automaton {
+  // Attributes for the ant
   private int xpos;
   private int ypos;
   private int head; // 0=North 1=East 2=South 3=West (clock-wise alternation)

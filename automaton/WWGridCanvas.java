@@ -13,7 +13,7 @@ public class WWGridCanvas extends Canvas {
   private WWCell[][] array;
   
   /** Constructor. */
-  public GridCanvas(int rows, int columns, int size) {
+  public WWGridCanvas(int rows, int columns, int size) {
     array = new WWCell[rows][columns];
     // Now populate the array
     // It is helpful to remember of the array as row-major, although it is not exactly the case
@@ -90,11 +90,11 @@ public class WWGridCanvas extends Canvas {
   }
   
   /**
-   * Test to see if a cell is alive.
+   * Test to see if a cell is an electron head; used when checking for neigboring currents to a conductor cell.
    * 
    * @param row the row index of the cell, starting from index 0
    * @param column the column index of the cell, starting from index 0
-   * @return 1 if the cell is alive, or 0 if it is dead
+   * @return true if the cell has 1 or 2 neighbor electron heads, or 0 if it has anything else
    * */
   public int test(int row, int column) {
     try {
@@ -110,11 +110,12 @@ public class WWGridCanvas extends Canvas {
   }
   
   /**
-   * Test to see if a cell is alive, according to toroidal grid style.
+   * Test to see if a cell is an electron head, according to toroidal grid style; used when checking for neigboring
+   * currents to a conductor cell.
    * 
    * @param row the row index of the cell, starting from 0
    * @param column the column index of the cell, starting from 0
-   * @return 1 if the cell is alive, or 0 if it is not alive
+   * @return true if the cell has 1 or 2 neighbor electron heads, or 0 if it has anything else
    * */
   private int spilloverTest(int row, int column) {
     // Handle rows spilling over borders

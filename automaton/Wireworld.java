@@ -5,11 +5,20 @@
  * @author Pierre-Charles Dussault
  * @since 2021/10/03
  * */
-public class Wireworld extends Automaton {
+public class Wireworld extends WWAutomaton {
   
-  /** Update the cells state according to the rules of the Wireworld automaton. */
-  private void updateCell(Cell cell) {
-    //
+  public Wireworld() {
+    System.out.println("Init Wireworld object.");
+    // TODO
+  }
+  
+  /** Update all the cells in the wire circuit. */
+  private void updateGrid() {
+    int numRows = grid.getRows();
+    int numColumns = grid.getColumns();
+    // TODO finish this function: iterate through all the cells in the grid, and update each cell accordingly.
+    // Conductor cell should be checked for neighbors who are electron heads, and those with 1-2 electron head neighbors
+    // should be changed to electron heads themselves
   }
   
   /** Override abstract method; update the state of the automaton. */

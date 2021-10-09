@@ -64,7 +64,7 @@ public class Conway extends Automaton {
   }
 
   /**
-   * For a given cell, count the number of ne      // System.out.println(grid.countOn());ighbor cells that are alive.
+   * For a given cell, count the number of neighbor cells that are alive.
    * 
    * @param row row index of the cell, starting from index 0
    * @param column column index of the cell, starting from index 0

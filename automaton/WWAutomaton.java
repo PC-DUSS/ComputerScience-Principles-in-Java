@@ -6,11 +6,11 @@ import javax.swing.JFrame;
  * @author Pierre-Charles Dussault
  * @since 2021/10/02
  * */
-public abstract class Automaton {
+public abstract class WWAutomaton {
 // Abstract class cannot be directly instantiated, only its subclasses can
 
   // Protected attributes can only be accessed by subclasses
-  protected GridCanvas grid;
+  protected WWGridCanvas grid;
   
   // Abstract method must be overriden in the subclasses
   public abstract void update();

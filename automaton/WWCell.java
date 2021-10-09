@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.awt.Graphics;
 
 /**
  * Extension of the Cell class to be adapted to the Wireworld automaton; not actually inherited because they have
@@ -7,7 +8,7 @@ import java.awt.Color;
  * @author Pierre-Charles Dussault
  * @since 2021/10/03
  * */
-public class WWCell extends Cell {
+public class WWCell {
    // Cells don't move, only their state can change
   private final int x;
   private final int y;
