@@ -80,12 +80,12 @@ public class WWGridCanvas extends Canvas {
   }
   
   /**
-   * Set the state of a cell, convenience method for when starting the game.
+   * Set the state of a cell, convenience method for when creating an instance of the automaton.
    * 
    * @param row the row of the cell, starting from index 0
    * @param column the column of the cell, starting from index 0
    * */
-  public void setState(int row, int column, int state) {
+  public void setCellState(int row, int column, int state) {
     array[row][column].setState(state);
   }
   
@@ -96,17 +96,18 @@ public class WWGridCanvas extends Canvas {
    * @param column the column index of the cell, starting from index 0
    * @return true if the cell has 1 or 2 neighbor electron heads, or 0 if it has anything else
    * */
-  public int test(int row, int column) {
+  public boolean test(int row, int column) {
     try {
-      if (array[row][column].getState() != 0) {
-	return 1;
+      if (array[row][column].getState() == 1) {
+	// If cell is an electron head
+	return true;
       }
       // If the cell doesn't exist
     } catch (ArrayIndexOutOfBoundsException e) {
       return spilloverTest(row, column);
     }
     
-    return 0;
+    return false;
   }
   
   /**
@@ -117,7 +118,7 @@ public class WWGridCanvas extends Canvas {
    * @param column the column index of the cell, starting from 0
    * @return true if the cell has 1 or 2 neighbor electron heads, or 0 if it has anything else
    * */
-  private int spilloverTest(int row, int column) {
+  private boolean spilloverTest(int row, int column) {
     // Handle rows spilling over borders
     if (row == -1) {
       row = array.length - 1;
@@ -133,17 +134,18 @@ public class WWGridCanvas extends Canvas {
     }
     
     // Test a cell according to the corrected cell coordinates
-    if (array[row][column].getState() != 0) {
-      return 1;
+    if (array[row][column].getState() == 1) {
+      // If cell is an electron head
+      return true;
     }
     
-    return 0;
+    return false;
   }
   
   /**
-   * Count the total number of cells that are alive within the game grid.
+   * Count the total number of cells that are not dead within the game grid.
    * 
-   * @return the number of cells that are alive
+   * @return the number of cells that are not dead
    * */
   public int countOn() {
     int numberAlive = 0;

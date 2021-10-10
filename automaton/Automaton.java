@@ -42,9 +42,10 @@ public abstract class Automaton {
    * */
   private void mainLoop(int rate) {
     while (true) {
+      pause(1000 / (rate / 2));
       update();
       grid.repaint();
-      pause(1000 / rate);
+      pause(1000 / (rate / 2));
     }
   }
   

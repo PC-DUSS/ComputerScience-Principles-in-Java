@@ -16,7 +16,7 @@ public class WWCell {
   // Possible states    dead=0    electron_head=1    electron_tail=2    conductor=3
   private int state;
   // Possible colors for each cell, depending on its state
-  //    dead=BLACK    electron_tail=BLUE    electron_tail=RED    conductor=YELLOW
+  //    dead=BLACK    electron_head=BLUE    electron_tail=RED    conductor=YELLOW
   public static final Color[] COLORS = {Color.BLACK, Color.BLUE, Color.RED, Color.YELLOW};
   
   /** 

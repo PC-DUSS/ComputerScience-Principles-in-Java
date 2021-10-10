@@ -9,7 +9,7 @@ import javax.swing.JFrame;
 public abstract class WWAutomaton {
 // Abstract class cannot be directly instantiated, only its subclasses can
 
-  // Protected attributes can only be accessed by subclasses
+  // Protected attributes can only be accessed by subclasses. This attribute must be initialized by the subclass!
   protected WWGridCanvas grid;
   
   // Abstract method must be overriden in the subclasses
@@ -41,10 +41,11 @@ public abstract class WWAutomaton {
    * @param rate the speed at which the automaton plays
    * */
   private void mainLoop(int rate) {
+    int pauseTimer = 1000 / rate;
     while (true) {
       update();
       grid.repaint();
-      pause(1000 / rate);
+      pause(pauseTimer);
     }
   }
   
