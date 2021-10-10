@@ -1,7 +1,7 @@
 **/*.class
 **/#*
 **/*~
-**/out
+**/out/*.class
 throwaway/
 gambitResearchCipher/keys.txt
 gambitResearchCipher/textSolutions.txt

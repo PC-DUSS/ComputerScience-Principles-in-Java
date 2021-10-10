@@ -1,0 +1,4 @@
+#C Name: XOR gate with 2 clock generators
+# d:dead(0) h:electron_head(1) t:electron_tail(2) c:conductor(3)
+x = 24, y = 13
+$$$3dth6c$2dc8d6c$3d6cth6dc$16d4c$16dc2d5c$16d4c$3dth6c6dc$2dc8d6c$3d6cth
