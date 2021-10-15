@@ -1,3 +1,4 @@
+import java.io.File;
 
 /**
  * Automaton which models eletrical current in a conductive wire; can be used to model logic gates.
@@ -10,6 +11,9 @@ public class Wireworld extends WWAutomaton {
   private static final int gridRows = 15;
   private static final int gridColumns = 15;
   private static final int cellSize = 20;
+  
+  // Global Scanner object
+  private final static Scanner = new Scanner(System.in);
   
   /** Default constructor with a basic circuit. */
   public Wireworld() {
@@ -63,12 +67,28 @@ public class Wireworld extends WWAutomaton {
   public Wireworld(String fileName) {
     grid = new WWGridCanvas(gridRows, gridColumns, cellSize);
     if (fileName.endsWith(".cells")) {
-      // parse .cells file
-      // TODO
+      parseFileAsCells(fileName);
     } else if (fileName.endsWith(".rle")) {
-      // parse .rle file
-      // TODO
+      parseFileAsRLE(fileName);
     }
+  }
+  
+  /**
+   * Parse a file as a cells format to create an instance of a Wireworld automaton.
+   * 
+   * @param fileName the name of the file to parse as a cells file
+   * */
+  private void parseFileAsCells(String fileName) {
+    // TODO
+  }
+  
+  /**
+   * Parse a file as an RLE format to create an instance of a Wireworld automaton.
+   * 
+   * @param fileName the name of the file to parse as an RLE file
+   * */
+  private void parseFileAsRLE(String fileName) {
+    // TODO
   }
   
   /** Update all the cells in the wire circuit. */
@@ -209,7 +229,7 @@ public class Wireworld extends WWAutomaton {
   /** Main program. */
   public static void main(String[] args) {
     String title = "My Circuit";
-    int rate = 1;
+    int rate = 2;
     Wireworld myCircuit = new Wireworld();
     myCircuit.run(title, rate);
   }
