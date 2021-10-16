@@ -1,8 +1,10 @@
 import java.util.ArrayList;
+import java.util.List;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
 import javax.swing.JFrame;
+
 
 /**
  * Representation of a sample drawing to draw polygons; advanced inheritance.
@@ -16,7 +18,7 @@ public class Drawing extends Canvas {
   private static final int THREAD_SLEEP_TIME = (int) (1000 / REFRESH_RATE);
   
   // Attributes
-  private ArrayList<DrawablePolygon> polygonList;
+  private List<Actor> list;
 
   /**
    * Value constructor.
@@ -27,7 +29,7 @@ public class Drawing extends Canvas {
   public Drawing(int width, int height) {
     this.setSize(width, height);
     this.setBackground(Color.WHITE);
-    this.polygonList = new ArrayList<DrawablePolygon>();
+    this.list = new ArrayList<Actor>();
   }
 
   /**
@@ -35,8 +37,8 @@ public class Drawing extends Canvas {
    *
    * @param dp the drawable polygon to add to the list
    * */
-  public void add(DrawablePolygon dp) {
-    this.polygonList.add(dp);
+  public void add(Actor actor) {
+    this.list.add(actor);
   }
 
   /**
@@ -45,32 +47,31 @@ public class Drawing extends Canvas {
    * @param g the graphics context for painting on the screen
    * */
   public void paint(Graphics g) {
-    for (DrawablePolygon dp : polygonList) {
-      dp.draw(g);
+    for (Actor actor : list) {
+      actor.draw(g);
     }
   }
   
   /**
-   * Sample drawing to display regular polygons.
+   * Create a sample drawing to display regular polygons.
    * 
-   * @return drawing the drawing object that was created
+   * @return the drawing object that was created
    * */
   private static Drawing sampleDrawing() {
-    DrawablePolygon p1 = new RegularPolygon(3, 50, Color.GREEN);
-    DrawablePolygon p2 = new RegularPolygon(6, 50, Color.BLUE);
-    DrawablePolygon p3 = new RegularPolygon(360, 50, Color.RED);
-    DrawablePolygon p4 = new RegularPolygon();
-    // Move the polygons out of the top-left corner
-    p1.translate(100, 80);
-    p2.translate(250, 120);
-    p3.translate(400, 160);
-    p4.translate(550, 200);
+    /* Declaring an object variable by the name of its interface is good practice, but it is
+     * incumbant upon you to make sure the functionality needed is indeed present. */
+    Actor a1 = new BlinkingPolygon(3, 50, Color.GREEN);
+    Actor a2 = new BlinkingPolygon(6, 50, Color.BLUE);
+    Actor a3 = new BlinkingPolygon(360, 50, Color.RED);
+    // Move the polygons out of the top-left corner and space them out
+    a1.translate(100, 80);
+    a2.translate(250, 120);
+    a3.translate(400, 160);
     // Create a drawing and add the polygons
     Drawing drawing = new Drawing(800, 600);
-    drawing.add(p1);
-    drawing.add(p2);
-    drawing.add(p3);
-    drawing.add(p4);
+    drawing.add(a1);
+    drawing.add(a2);
+    drawing.add(a3);
     // Setup the window display frame
     JFrame frame = new JFrame("My Polygons");
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -104,8 +105,8 @@ public class Drawing extends Canvas {
   
   /** Do some blinking stuff. */
   private void step() {
-    for (DrawablePolygon polygon : polygonList) {
-      polygon.step();
+    for (Actor actor : list) {
+      actor.step();
     }
 
     // This clears the drawing and then redraws

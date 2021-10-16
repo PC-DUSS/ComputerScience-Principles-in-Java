@@ -9,7 +9,7 @@ import java.awt.Graphics;
  * @author Pierre-Charles Dussault
  * @since 2021/10/13
  * */
-public class DrawablePolygon extends Polygon {
+public class DrawablePolygon extends Polygon implements Actor {
 // This class is an example of specialization
 
   protected Color color;
@@ -23,7 +23,8 @@ public class DrawablePolygon extends Polygon {
   /**
    * Draw this polygon based on its color attribute.
    *
-   * @param g the graphics context used to draw the polygon on the screen
+   * @param g the graphics context from the Drawing object to draw elements to it; will be passed
+   * 	from the 'paint' method in Drawing class when it is called by the Event Dispatch Thread
    * */
   public void draw(Graphics g) {
     g.setColor(color);

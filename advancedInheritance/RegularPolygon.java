@@ -36,7 +36,7 @@ public class RegularPolygon extends DrawablePolygon {
     this.ypoints = new int[numSides];
     this.color = color;
 
-    // The amount of rotation necessary, in RADIANS, to go from one corner to the next (each corner is a vertex)
+    // The amount of rotation necessary, in RADIANS, to go from one vertex to the next
     double baseTheta = 2.0 * Math.PI / numSides;
     // Compute x and y coordinates for all corners
     for (int i = 0; i < numSides; i++) {
@@ -50,25 +50,25 @@ public class RegularPolygon extends DrawablePolygon {
   }
 
   /**
-   * Value constructor with default color as gray.
+   * Value constructor with default color as Color.GRAY.
    *
    * @param numSides number of sides for this polygon
    * @param radius the distance between the center and the vertex
    * */
   public RegularPolygon(int numSides, int radius) {
     /*
-     * Make the color parameter optional, and sets its default value to the Color.GRAY field.
-     * The 'this' keyword can be used in a constructor to call the class constructor with an
-     * equivalent parameter list. In this case, it calls the constructor we defined just previously,
-     * but by deciding to pass the static value Color.GRAY to the attribute 'color' of the object.
-     * This allows us to set default values to certain attributes, and in the process make said
-     * attributes optional when creating an object from the class.
+     * Makes the color parameter optional, and sets its default value to the Color.GRAY field.
+     * The 'this' keyword can be used in a constructor to call the class constructor with a
+     * different parameter list. In this case, it calls the constructor we defined just previously,
+     * but it passes the static value 'Color.GRAY' as the color parameter for the constructor.
+     * This allows us to give a default value to certain attributes and make it possible to create
+     * an object without explicitely specifiying a value for that attribute.
      * */
     this(numSides, radius, Color.GRAY);
   }
 
   /**
-   * Value constructor with default radius as 50px and default color as Color.GRAY.
+   * Value constructor with default radius as 50px.
    *
    * @param numSides number of sides for this polygon
    * */
