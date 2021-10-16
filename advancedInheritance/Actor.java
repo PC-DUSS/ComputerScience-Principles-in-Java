@@ -27,7 +27,8 @@ interface Actor {
   
   /**
    * Translate the actor from the top-left origin (0, 0) by a set (x, y) of pixels; override this
-   * method in a subclass and implement the aforementioned functionality.
+   * method in a subclass and implement the aforementioned functionality, or inherit from a
+   * superclass who already does.
    * */
   public void translate(int deltaX, int deltaY);
 }
