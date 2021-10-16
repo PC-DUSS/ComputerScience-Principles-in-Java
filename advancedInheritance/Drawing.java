@@ -53,25 +53,25 @@ public class Drawing extends Canvas {
   }
   
   /**
-   * Create a sample drawing to display regular polygons.
+   * Create a sample drawing of polygons.
    * 
    * @return the drawing object that was created
    * */
-  private static Drawing sampleDrawing() {
+  private static Drawing samplePolygons() {
     /* Declaring an object variable by the name of its interface is good practice, but it is
      * incumbant upon you to make sure the functionality needed is indeed present. */
-    Actor a1 = new BlinkingPolygon(3, 50, Color.GREEN);
-    Actor a2 = new BlinkingPolygon(6, 50, Color.BLUE);
-    Actor a3 = new BlinkingPolygon(360, 50, Color.RED);
+    DrawablePolygon p1 = new BlinkingPolygon(3, 50, Color.GREEN);
+    DrawablePolygon p2 = new BlinkingPolygon(6, 50, Color.BLUE);
+    DrawablePolygon p3 = new BlinkingPolygon(360, 50, Color.RED);
     // Move the polygons out of the top-left corner and space them out
-    a1.translate(100, 80);
-    a2.translate(250, 120);
-    a3.translate(400, 160);
+    p1.translate(100, 80);
+    p2.translate(250, 120);
+    p3.translate(400, 160);
     // Create a drawing and add the polygons
     Drawing drawing = new Drawing(800, 600);
-    drawing.add(a1);
-    drawing.add(a2);
-    drawing.add(a3);
+    drawing.add(p1);
+    drawing.add(p2);
+    drawing.add(p3);
     // Setup the window display frame
     JFrame frame = new JFrame("My Polygons");
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -115,7 +115,7 @@ public class Drawing extends Canvas {
   
   /** Method called in Main class to run the program. */
   public static void run() {
-    Drawing drawing = sampleDrawing();
+    Drawing drawing = samplePolygons();
     drawing.blink();
   }
 }
