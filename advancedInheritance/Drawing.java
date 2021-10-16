@@ -5,14 +5,14 @@ import java.awt.Graphics;
 import javax.swing.JFrame;
 
 /**
- * Representation of a sample drawing to draw polygons
+ * Representation of a sample drawing to draw polygons; advanced inheritance.
  *
  * @author Pierre-Charles Dussault
  * @since 2021/10/13
  * */
 public class Drawing extends Canvas {
   // CONSTANTS
-  private static final int REFRESH_RATE = 30; // in Hz
+  private static final int REFRESH_RATE = 10; // in Hz
   private static final int THREAD_SLEEP_TIME = (int) (1000 / REFRESH_RATE);
   
   // Attributes
@@ -36,7 +36,7 @@ public class Drawing extends Canvas {
    * @param dp the drawable polygon to add to the list
    * */
   public void add(DrawablePolygon dp) {
-    polygonList.add(dp);
+    this.polygonList.add(dp);
   }
 
   /**
@@ -107,13 +107,13 @@ public class Drawing extends Canvas {
     for (DrawablePolygon polygon : polygonList) {
       polygon.step();
     }
-    
+
     // This clears the drawing and then redraws
     this.repaint();
   }
-
-  /** Main Program. */
-  public static void main(String[] args) {
+  
+  /** Method called in Main class to run the program. */
+  public static void run() {
     Drawing drawing = sampleDrawing();
     drawing.blink();
   }

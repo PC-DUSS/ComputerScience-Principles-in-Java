@@ -1,7 +1,8 @@
 import java.awt.Color;
 
 /**
- * Representation of a regular polygon, extending DrawablePolygon; to explore more advanced features of inheritance.
+ * Representation of a regular polygon, extending DrawablePolygon; to explore more advanced
+ * features of inheritance.
  *
  * @author Pierre-Charles Dussault
  * @since 2021/10/13
@@ -43,8 +44,8 @@ public class RegularPolygon extends DrawablePolygon {
       double x = radius * Math.cos(theta);
       double y = radius * Math.sin(theta);
       // Round to exact values for pixels
-      xpoints[i] = (int) Math.round(x);
-      ypoints[i] = (int) Math.round(y);
+      this.xpoints[i] = (int) Math.round(x);
+      this.ypoints[i] = (int) Math.round(y);
     }
   }
 
@@ -57,10 +58,11 @@ public class RegularPolygon extends DrawablePolygon {
   public RegularPolygon(int numSides, int radius) {
     /*
      * Make the color parameter optional, and sets its default value to the Color.GRAY field.
-     * The 'this' keyword can be used in a constructor to call the class constructor with an equivalent parameter list.
-     * In this case, it calls the constructor we defined just previously, but by deciding to pass the static value
-     * Color.GRAY to the attribute 'color' of the object. This allows us to set default values to certain attributes,
-     * and in the process make said attributes optional when creating an object from the class.
+     * The 'this' keyword can be used in a constructor to call the class constructor with an
+     * equivalent parameter list. In this case, it calls the constructor we defined just previously,
+     * but by deciding to pass the static value Color.GRAY to the attribute 'color' of the object.
+     * This allows us to set default values to certain attributes, and in the process make said
+     * attributes optional when creating an object from the class.
      * */
     this(numSides, radius, Color.GRAY);
   }
@@ -71,21 +73,12 @@ public class RegularPolygon extends DrawablePolygon {
    * @param numSides number of sides for this polygon
    * */
   public RegularPolygon(int numSides) {
-    // This will call the constructor with 2 parameters, which will call the constructor with 3 parameters
+    // This will call the 2-parameter constructor, which will call the 3-parameter constructor
     this(numSides, 50);
   }
 
   /** Default constructor with default number of sides as 4 (a square). */
   public RegularPolygon() {
-    // This will call the constructor with 1 parameter, which will call the constructor with 2 parameters, which will
-    // call the constructor with 3 paramaters
     this(4);
-  }
-
-  /** Main program. */
-  public static void main(String[] args) {
-    // Just shits and giggles in here
-    RegularPolygon rp = new RegularPolygon(6);
-    rp.translate(100, 100);
   }
 }

@@ -3,7 +3,8 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 /**
- * Explore more advanced topics with inheritance.
+ * Representation of a polygon drawable on a Drawing object; explore more advanced topics with
+ * inheritance.
  *
  * @author Pierre-Charles Dussault
  * @since 2021/10/13
@@ -39,16 +40,7 @@ public class DrawablePolygon extends Polygon {
   }
 
   public void step() {
-    // do nothing
-  }
-
-  /** Main program. */
-  public static void main(String[] args) {
-    // Just shits and giggles in here
-    DrawablePolygon myPolygon = new DrawablePolygon();
-    myPolygon.addPoint(57, 110);
-    myPolygon.addPoint(100, 35);
-    myPolygon.addPoint(143, 110);
-    myPolygon.setColor(Color.GREEN);
+    // empty
+    // override this in a subclass
   }
 }
