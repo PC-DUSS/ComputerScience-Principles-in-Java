@@ -40,8 +40,5 @@ public class DrawablePolygon extends Polygon implements Actor {
     this.color = newColor;
   }
 
-  public void step() {
-    // empty
-    // override this in a subclass
-  }
+  public void step() { /* Empty, override this in a subclass. */ }
 }

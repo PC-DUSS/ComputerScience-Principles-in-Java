@@ -92,5 +92,7 @@ public class Sprite implements Actor, KeyListener {
   }
   
   /** Not implemented. */
-  public void keyTyped(KeyEvent e) { /* Do nothing. */ }
+  public void keyTyped(KeyEvent e) {
+    // do nothing
+  }
 }
