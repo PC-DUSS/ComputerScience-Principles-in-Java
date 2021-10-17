@@ -113,6 +113,18 @@ public class Drawing extends Canvas {
     this.repaint();
   }
   
+  /**
+   * Create a sample drawing with a moving Sprite.
+   * 
+   * @return the drawing object that was created
+   * */
+  private Drawing sampleSprite() {
+    Sprite sprite = new Sprite("face-smile.png", 25, 150);
+    drawing.add(sprite);
+    drawing.addKeyListener(sprite);
+    drawing.setFocusable(true);
+  }
+  
   /** Method called in Main class to run the program. */
   public static void run() {
     Drawing drawing = samplePolygons();
