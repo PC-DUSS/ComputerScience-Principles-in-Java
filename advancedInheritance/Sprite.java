@@ -1,5 +1,7 @@
-import java.awt.Rectangle;
+import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Rectangle;
+import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.imageio.ImageIO;
 import java.io.File;

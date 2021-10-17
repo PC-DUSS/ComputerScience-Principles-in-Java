@@ -57,7 +57,7 @@ public class Drawing extends Canvas {
    * 
    * @return the drawing object that was created
    * */
-  private static Drawing samplePolygons() {
+  private static void samplePolygons() {
     /* Declaring an object variable by the name of its interface is good practice, but it is
      * incumbant upon you to make sure the functionality needed is indeed present. */
     DrawablePolygon p1 = new BlinkingPolygon(3, 50, Color.GREEN);
@@ -79,7 +79,7 @@ public class Drawing extends Canvas {
     frame.pack();
     frame.setVisible(true);
     
-    return drawing;
+    drawing.blink();
   }
 
   /**
@@ -119,15 +119,25 @@ public class Drawing extends Canvas {
    * @return the drawing object that was created
    * */
   private Drawing sampleSprite() {
+    Drawing drawing = new Drawing(800, 800);
     Sprite sprite = new Sprite("face-smile.png", 25, 150);
     drawing.add(sprite);
     drawing.addKeyListener(sprite);
     drawing.setFocusable(true);
+    
+    JFrame frame = new JFrame("My Polygons");
+    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    frame.add(drawing);
+    frame.pack();
+    frame.setVisible(true);
+    
+    return drawing;
+    
+    // TODO ???
   }
   
   /** Method called in Main class to run the program. */
   public static void run() {
-    Drawing drawing = samplePolygons();
-    drawing.blink();
+    samplePolygons();
   }
 }
