@@ -65,7 +65,7 @@ public class Drawing extends Canvas {
     }
   }
   
-  /** Make the polygons blink on screen. */
+  /** Main loop for the program. */
   private void mainLoop() {
     while (true) {
       this.step();
@@ -73,8 +73,8 @@ public class Drawing extends Canvas {
     }
   }
   
-  /** Do some blinking stuff. */
-  private void step() {
+  /** Method that determines what happens for each step in the main loop. */
+  public void step() {
     for (Actor actor : list) {
       // The behaviour of this method depends on its implementation inside the caller object's class
       actor.step();
@@ -124,13 +124,13 @@ public class Drawing extends Canvas {
    * */
   private static void sampleSprite() {
     Sprite sprite = new Sprite("face-smile.png", 25, 150);
-    Drawing drawing = new Drawing(800, 800);
+    Drawing drawing = new Drawing(800, 600);
     drawing.add(sprite);
     drawing.addKeyListener(sprite);
     // Make the drawing focusable so that it can register keyboard input
     drawing.setFocusable(true);
     
-    JFrame frame = new JFrame("My Polygons");
+    JFrame frame = new JFrame("My Sprite");
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frame.add(drawing);
     frame.pack();

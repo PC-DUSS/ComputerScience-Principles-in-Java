@@ -8,6 +8,6 @@ public class Main {
   
   /** Main program. */
   public static void main(String[] args) {
-    Drawing.run();
+    VideoGame.run();
   }
 }

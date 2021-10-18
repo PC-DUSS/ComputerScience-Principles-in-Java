@@ -58,18 +58,18 @@ public class Sprite implements Actor, KeyListener {
   public void keyPressed(KeyEvent e) {
     switch (e.getKeyCode()) {
       case KeyEvent.VK_UP:
-	// Remember, going upwards decreases the y-coordinate
-	dy = -5;
-	break;
+        // Remember, going upwards decreases the y-coordinate
+        dy = -5;
+        break;
       case KeyEvent.VK_DOWN:
-	dy = 5;
-	break;
+        dy = 5;
+        break;
       case KeyEvent.VK_RIGHT:
-	dx = 5;
-	break;
+        dx = 5;
+        break;
       case KeyEvent.VK_LEFT:
-	dx = -5;
-	break;
+        dx = -5;
+        break;
     }
   }
   
@@ -82,12 +82,12 @@ public class Sprite implements Actor, KeyListener {
     switch (e.getKeyCode()) {
       case KeyEvent.VK_UP:
       case KeyEvent.VK_DOWN:
-	dy = 0;
-	break;
+        dy = 0;
+        break;
       case KeyEvent.VK_RIGHT:
       case KeyEvent.VK_LEFT:
-	dx = 0;
-	break;
+        dx = 0;
+        break;
     }
   }
   
