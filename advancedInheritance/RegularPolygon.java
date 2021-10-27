@@ -9,6 +9,8 @@ import java.awt.Color;
  * */
 public class RegularPolygon extends DrawablePolygon {
 // Keep in mind this class uses radians as a unit for angles
+  protected int radius;
+  protected int diameter;
 
   /**
    * Value constructor.
@@ -34,6 +36,8 @@ public class RegularPolygon extends DrawablePolygon {
     this.npoints = numSides;
     this.xpoints = new int[numSides];
     this.ypoints = new int[numSides];
+    this.radius = radius;
+    this.diameter = 2 * radius;
     this.color = color;
 
     // The amount of rotation necessary, in RADIANS, to go from one vertex to the next

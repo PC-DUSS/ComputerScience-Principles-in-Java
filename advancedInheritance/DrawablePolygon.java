@@ -33,7 +33,7 @@ public class DrawablePolygon extends Polygon implements Actor {
 
   /**
    * Set the current color to a new color.
-   * 
+   *
    * @param newColor the desired new color
    * */
   public void setColor(Color newColor) {
@@ -43,12 +43,12 @@ public class DrawablePolygon extends Polygon implements Actor {
   public void step() {
     // Empty, override this in a subclass.
   }
-  
+
   /**
-   * For each element in both arrays, combine each element with the respective element in the other
-   * array into a new 2-element array, and then place it into a destination array that will be
-   * returned.
-   * 
+   * For each element in both arrays, combine each element with its counterpart at the same index
+   * in the other array into a new 2-element array, and put each of those pairs into a destination
+   * array that will be returned; both arrays must be of the same size.
+   *
    * @param arr1 the first array to use for the merge
    * @param arr2 the second array to use for the merge
    * @return the destination array
@@ -58,26 +58,26 @@ public class DrawablePolygon extends Polygon implements Actor {
     if (arr1.length != arr2.length) {
       throw new IllegalArgumentException("associateArrays(): Arrays must be of the same length.");
     }
-    
+
     // Remember row-major ordering
     int[][] destinationArray = new int[arr1.length][2];
     for (int i = 0; i < arr1.length; i++) {
       int[] currentPair = {arr1[i], arr2[i]};
       destinationArray[i] = currentPair;
     }
-    
+
     return destinationArray;
   }
-  
-  /** Built-in override: get a string representation for this polygon. */
+
+  /** Built-in override: get a string representation for this drawable polygon. */
   public String toString() {
     int[][] coords = associateArrays(xpoints, ypoints);
-    // Print first part of the output, with an opening bracket for the 2D array to come
+    // First part of the output, with an opening bracket for the 2D array that is coming
     StringBuilder sb = new StringBuilder(
         String.format("%d-sided polygon, color is %s, with coordinate points: [",
         this.npoints, this.color.toString()));
-	
-    // Print each element in the 2D array in single-line format
+
+    // Each element in the 2D array, in single-line format
     for (int i = 0; i < coords.length; i++) {
       // Open the inner-bracket for the beginning of each pair
       sb.append("[");
@@ -92,7 +92,7 @@ public class DrawablePolygon extends Polygon implements Actor {
       // Close the inner-bracket for the end of each pair, and separate each pair by a comma + space
       sb.append("], ");
     }
-    
+
     // Remember to remove the final comma and space, and to close the final array bracket
     sb.delete(sb.length() - 2, sb.length() - 1);
     sb.append("]");
@@ -100,14 +100,38 @@ public class DrawablePolygon extends Polygon implements Actor {
     sb.deleteCharAt(sb.length() - 2);
     return sb.toString();
   }
-  
-  /** Test out functionality. */
-  public static void main(String[] args) {
-    DrawablePolygon myPoly = new DrawablePolygon();
-    myPoly.addPoint(25, 25);
-    myPoly.addPoint(58, 106);
-    myPoly.addPoint(90, 40);
-    myPoly.addPoint(20, 150);
-    System.out.println(myPoly);
+
+  /** Get the leftmost and topmost coordinates for this polygon according to its set of points. */
+  public int[] getTopLeftCorner() {
+    // Input validation
+    if (npoints < 1) {
+      throw new ArrayIndexOutOfBoundsException(
+          "getCornerCoords(): there are no coordinates from which to search");
+    }
+
+    int xMin = getSmallest(xpoints, npoints);
+    int yMin = getSmallest(ypoints, npoints);
+    int[] topleftCorner = {xMin, yMin};
+    return topleftCorner;
+  }
+
+  /** Get the smallest element from a sample of an array of positive integers.
+   *
+   * @param arr the array to examine
+   * @param upperBound number of elements to examine inside the array
+   * @return the smallest element from inside the examined sample from the array
+   * */
+  private static int getSmallest(int[] arr, int upperBound) {
+    int smallest = VideoGame.MAX_DIMENSION;
+    for (int i = 0; i < upperBound; i++)
+      if (arr[i] < smallest)
+        smallest = arr[i];
+
+    return smallest;
+  }
+
+  /** Do not implement. */
+  public void handleCollisions() {
+    // Do nothing here, not implemented
   }
 }

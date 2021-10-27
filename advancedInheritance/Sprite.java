@@ -9,19 +9,19 @@ import java.io.IOException;
 
 /**
  * Class to represent a moving image on a Drawing; using event listeners.
- * 
+ *
  * @author Pierre-Charles Dussault
  * @since 2021/10/16
  * */
 public class Sprite implements Actor, KeyListener {
   private int xpos;
   private int ypos;
-  // Velocity of the sprite in x-axis and y-axis
   private int dx;
   private int dy;
+  private Rectangle bounds;
   // Image to display
   private Image image;
-  
+
   /** Creates a new Sprite. */
   public Sprite(String path, int xpos, int ypos) {
     this.xpos = xpos;
@@ -33,26 +33,45 @@ public class Sprite implements Actor, KeyListener {
     } catch (IOException e) {
       e.printStackTrace();
     }
+
+    // Define the bounds Rectangle for this sprite
+    bounds = new Rectangle(this.xpos, this.ypos, this.image.getWidth(null),
+        this.image.getHeight(null));
   }
-  
+
   /**
-   * Draw the Image at its current coordinates at this point in time; interface method override.
-   * 
+   * Draw the Image at its current coordinates (the topleft corner) at this point in time;
+   * interface method override.
+   *
    * @param g Graphics context to draw on the Drawing
    * */
   public void draw(Graphics g) {
     g.drawImage(this.image, this.xpos, this.ypos, null);
   }
-  
+
   /** Update the position of the Sprite according to its velocity attributes dx and dy. */
   public void step() {
-    this.xpos += this.dx;
-    this.ypos += this.dy;
+    int nextX = this.xpos + this.dx;
+    int nextY = this.ypos + this.dy;
+    // These flags prevent us from having to do a third conditional check
+    int xFlag = 0;
+    int yFlag = 0;
+    if (nextX > VideoGame.WIDTH || nextX < 0) {
+      this.xpos += this.dx;
+      xFlag = 1;
+    }
+
+    if (nextY > VideoGame.HEIGHT || nextY < 0) {
+      this.ypos += this.dy;
+      yFlag = 1;
+    }
+
+    this.bounds.translate(xFlag * this.dx, yFlag * this.dy);
   }
-  
+
   /**
-   * Set velocity according to key presses. 
-   * 
+   * Set velocity according to key presses.
+   *
    * @param e the key event to analyze
    * */
   public void keyPressed(KeyEvent e) {
@@ -72,10 +91,10 @@ public class Sprite implements Actor, KeyListener {
         break;
     }
   }
-  
+
   /**
    * Remove velocity according to key releases.
-   * 
+   *
    * @param e the key event to analyze
    * */
   public void keyReleased(KeyEvent e) {
@@ -90,9 +109,14 @@ public class Sprite implements Actor, KeyListener {
         break;
     }
   }
-  
+
   /** Not implemented. */
   public void keyTyped(KeyEvent e) {
     // do nothing
+  }
+
+  /** Handle collision with other Actors. */
+  public void handleCollisions() {
+    // TODO
   }
 }
