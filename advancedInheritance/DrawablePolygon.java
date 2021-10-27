@@ -1,6 +1,7 @@
-import java.awt.Polygon;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Polygon;
+import java.awt.Rectangle;
 
 /**
  * Representation of a polygon drawable on a Drawing object; explore more advanced topics with
@@ -12,12 +13,16 @@ import java.awt.Graphics;
 public class DrawablePolygon extends Polygon implements Actor {
 // This class is an example of specialization
 
+  // Attributes
   protected Color color;
+  protected Rectangle bounds;
 
   /** Default constructor. */
   public DrawablePolygon() {
     super();
     this.color = Color.GRAY;
+    // Initially, this is null. You need to call it again when you add more points
+    this.bounds = initBounds();
   }
 
   /**
@@ -106,7 +111,7 @@ public class DrawablePolygon extends Polygon implements Actor {
     // Input validation
     if (npoints < 1) {
       throw new ArrayIndexOutOfBoundsException(
-          "getCornerCoords(): there are no coordinates from which to search");
+          "getTopLeftCorner(): there are no coordinates from which to search");
     }
 
     int xMin = getSmallest(xpoints, npoints);
@@ -128,6 +133,57 @@ public class DrawablePolygon extends Polygon implements Actor {
         smallest = arr[i];
 
     return smallest;
+  }
+
+  /** Get the greatest element from a sample of an array of positive integers.
+   *
+   * @param arr the array to examine
+   * @param upperBound number of elements to examine inside the array
+   * @return the greatest element from inside the examined sample from the array
+   * */
+  private static int getGreatest(int[] arr, int upperBound) {
+    int greatest = 0;
+    for (int i = 0; i < upperBound; i++)
+      if (arr[i] > greatest)
+        greatest = arr[i];
+
+    return greatest;
+  }
+
+  /**
+   * Initialize the bounding Rectangle for this polygon.
+   *
+   * @return the bounding Rectangle for this polygon
+   * */
+  public Rectangle initBounds() {
+    // If this is a new and empty polygon, return empty bounds
+    if (npoints == 0)
+      return null;
+
+    int[] topleft = getTopLeftCorner();
+    int width = getWidth();
+    int height = getHeight();
+    return new Rectangle(topleft[0], topleft[1], width, height);
+  }
+
+  /** Get the width of this polygon.
+   *
+   * @return the width of this polygon
+   * */
+  private int getWidth() {
+    int smallestX = getSmallest(xpoints, npoints);
+    int greatestX = getGreatest(xpoints, npoints);
+    return greatestX - smallestX;
+  }
+
+  /** Get the height of this polygon.
+   *
+   * @return the height of this polygon
+   * */
+  private int getHeight() {
+    int smallestY = getSmallest(ypoints, npoints);
+    int greatestY = getGreatest(ypoints, npoints);
+    return greatestY - smallestY;
   }
 
   /** Do not implement. */

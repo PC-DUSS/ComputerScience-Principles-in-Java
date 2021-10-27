@@ -17,7 +17,6 @@ public class MovingPolygon extends RegularPolygon implements Actor, KeyListener 
   protected int[] topright;
   protected int[] bottomleft;
   protected int[] bottomright;
-  protected Rectangle bounds;
 
   /**
    * Value constructor.
@@ -37,7 +36,6 @@ public class MovingPolygon extends RegularPolygon implements Actor, KeyListener 
     this.bottomleft = new int[] {xpos, ypos + this.diameter};
     this.bottomright = new int[] {xpos + this.diameter, ypos + this.diameter};
     this.translateToPoint(xpos, ypos);
-    this.bounds = new Rectangle(xpos, ypos, this.diameter, this.diameter);
   }
 
   /** Value constructor; default color as GRAY. */
@@ -131,14 +129,11 @@ public class MovingPolygon extends RegularPolygon implements Actor, KeyListener 
     }
   }
 
-  /** Handle what happens if a collision occurs with other Actors. */
-  public void handleCollision() {
-    // TODO
-  }
-
-  /** Update corner coordinates, and check if any are out of bounds.
+  /**
+   * Update the corners and check if they are within bounds; if they are not, revert them to
+   * their prior position; returns the status of this attempt.
    *
-   * @return true or false, depending on if the corners are valid, or if they are out of bounds
+   * @return true if it succeeded, or false if it did not
    * */
   private boolean updateCorners() {
     topleft[0] = xpos + dx;
@@ -157,15 +152,18 @@ public class MovingPolygon extends RegularPolygon implements Actor, KeyListener 
       resetCorners();
       return false;
     } else {
+      this.bounds = initBounds();
       return true;
     }
   }
 
-  /** Check if updating the corner coordinates would place them out of bounds.
+  /**
+   * Update the corners and check if they are within bounds; if they are not, revert them to
+   * their prior position; returns the status of this attempt.
    *
-   * @param dx deltaX for the current boundaries check
-   * @param dy deltaY for the current boundaries check
-   * @return true or false, depending on if the corners are valid, or if they are out of bounds
+   * @param deltaX
+   * @param deltaY
+   * @return true if it succeeded, or false if it did not
    * */
   private boolean updateCorners(int deltaX, int deltaY) {
     topleft[0] = xpos + deltaX;
@@ -184,6 +182,7 @@ public class MovingPolygon extends RegularPolygon implements Actor, KeyListener 
       resetCorners();
       return false;
     } else {
+      this.bounds = initBounds();
       return true;
     }
   }
@@ -198,5 +197,10 @@ public class MovingPolygon extends RegularPolygon implements Actor, KeyListener 
     bottomleft[1] -= dy;
     bottomright[0] -= dx;
     bottomright[1] -= dy;
+  }
+
+  /** Handle what happens if a collision occurs with other Actors. */
+  public void handleCollision() {
+    // TODO
   }
 }

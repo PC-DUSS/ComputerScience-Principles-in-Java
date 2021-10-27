@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.awt.Rectangle;
 
 /**
  * Representation of a regular polygon, extending DrawablePolygon; to explore more advanced
@@ -51,6 +52,8 @@ public class RegularPolygon extends DrawablePolygon {
       this.xpoints[i] = (int) Math.round(x);
       this.ypoints[i] = (int) Math.round(y);
     }
+
+    this.bounds = initBounds();
   }
 
   /**

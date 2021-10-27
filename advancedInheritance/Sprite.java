@@ -16,10 +16,15 @@ import java.io.IOException;
 public class Sprite implements Actor, KeyListener {
   private int xpos;
   private int ypos;
+  private int width;
+  private int height;
   private int dx;
   private int dy;
+  protected int[] topleft;
+  protected int[] topright;
+  protected int[] bottomleft;
+  protected int[] bottomright;
   private Rectangle bounds;
-  // Image to display
   private Image image;
 
   /** Creates a new Sprite. */
@@ -35,8 +40,9 @@ public class Sprite implements Actor, KeyListener {
     }
 
     // Define the bounds Rectangle for this sprite
-    bounds = new Rectangle(this.xpos, this.ypos, this.image.getWidth(null),
-        this.image.getHeight(null));
+    this.width = this.image.getWidth(null);
+    this.height = this.image.getHeight(null);
+    this.bounds = new Rectangle(this.xpos, this.ypos, this.width, this.height);
   }
 
   /**
@@ -51,22 +57,11 @@ public class Sprite implements Actor, KeyListener {
 
   /** Update the position of the Sprite according to its velocity attributes dx and dy. */
   public void step() {
-    int nextX = this.xpos + this.dx;
-    int nextY = this.ypos + this.dy;
-    // These flags prevent us from having to do a third conditional check
-    int xFlag = 0;
-    int yFlag = 0;
-    if (nextX > VideoGame.WIDTH || nextX < 0) {
-      this.xpos += this.dx;
-      xFlag = 1;
+    // Update corners and check if any corner is out of bounds
+    if (updateCorners()) {
+      xpos += dx;
+      ypos += dy;
     }
-
-    if (nextY > VideoGame.HEIGHT || nextY < 0) {
-      this.ypos += this.dy;
-      yFlag = 1;
-    }
-
-    this.bounds.translate(xFlag * this.dx, yFlag * this.dy);
   }
 
   /**
@@ -113,6 +108,64 @@ public class Sprite implements Actor, KeyListener {
   /** Not implemented. */
   public void keyTyped(KeyEvent e) {
     // do nothing
+  }
+
+  /**
+   * Update the corners and check if they are within bounds; if they are not, revert them to
+   * their prior position; returns the status of this attempt.
+   *
+   * @return true if it succeeded, or false if it did not
+   * */
+  private boolean updateCorners() {
+    topleft[0] = xpos + dx;
+    topleft[1] = ypos + dy;
+    topright[0] = xpos + width + dx;
+    topright[1] = ypos + dy;
+    bottomleft[0] = xpos + dx;
+    bottomleft[1] = ypos + height + dy;
+    bottomright[0] = xpos + width + dx;
+    bottomright[1] = ypos + height + dy;
+
+    if (topleft[0] < 0 || topright[0] > VideoGame.WIDTH) {
+      resetCorners();
+      return false;
+    } else if (topleft[1] < 0 || bottomleft[1] > VideoGame.HEIGHT) {
+      resetCorners();
+      return false;
+    } else {
+      this.bounds = initBounds();
+      return true;
+    }
+  }
+
+  /**
+   * Update the corners and check if they are within bounds; if they are not, revert them to
+   * their prior position; returns the status of this attempt.
+   *
+   * @param deltaX
+   * @param deltaY
+   * @return true if it succeeded, or false if it did not
+   * */
+  private boolean updateCorners(int deltaX, int deltaY) {
+    topleft[0] = xpos + deltaX;
+    topleft[1] = ypos + deltaY;
+    topright[0] = xpos + width + deltaX;
+    topright[1] = ypos + deltaY;
+    bottomleft[0] = xpos + deltaX;
+    bottomleft[1] = ypos + height + deltaY;
+    bottomright[0] = xpos + width + deltaX;
+    bottomright[1] = ypos + height + deltaY;
+
+    if (topleft[0] < 0 || topright[0] > VideoGame.WIDTH) {
+      resetCorners();
+      return false;
+    } else if (topleft[1] < 0 || bottomleft[1] > VideoGame.HEIGHT) {
+      resetCorners();
+      return false;
+    } else {
+      this.bounds = initBounds();
+      return true;
+    }
   }
 
   /** Handle collision with other Actors. */

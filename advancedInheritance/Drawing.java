@@ -146,4 +146,16 @@ public class Drawing extends Canvas {
   public static void run() {
     sampleSprite();
   }
+
+  /**
+   * Detect collisions between actors in the Drawing.
+   *
+   * @return true or false, depending on if any actors collided or not
+   * */
+  public boolean detectCollisions() {
+    // TODO
+
+    // stub
+    return false;
+  }
 }
